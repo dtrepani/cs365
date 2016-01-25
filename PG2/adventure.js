@@ -41,22 +41,22 @@ var questions = [
 		2,
 		3
 	],
-	[	"Cars begin to honk behind you. They probably want you to stop reflecting upon your life choices in the middle of the street."
+	[	"Cars begin to honk behind you. They probably want you to stop reflecting upon your life choices in the middle of the street.",
 		"Continue to reflect upon your life choices in the middle of the street.",
 		"The shiny's getting away! You return to the chase.",
 		"GAMEOVER",
-		x
+		0
 	],
 	[	"As you're chasing the shiny down the street, a truck barely misses you as you blindly chase the shiny. There are many more cars after the truck. The shiny is so far away now though. If only you hadn't reflected upon your life choices earlier.",
 		"Reflect further upon your life choices as you wait for the cars to pass.",
 		"Charge blindly into traffic. The shiny has top priority.",
 		"GAMEOVER",
-		x
+		0
 	],
 	[	"You somehow survive blindly running into traffic, but the shiny is still far away. There is a biker nearby watching the scene you caused.",
 		"Push them off their bike and steal it. Reflect upon your life choices and how a shiny has led you to a life of crime.",
 		"Ignore them and continue to run after the shiny.",
-		x,
+		0,
 		"GAMEOVER"
 	],
 	[	"The shiny is so close and slowing down, but someone picked it up. They observe it intently, oblivious to your presence.",
