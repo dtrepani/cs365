@@ -10,6 +10,7 @@ see shiny
 		> continue to reflect
 			GAMEOVER - shiny got away!
 		> break out of trance and go after shiny
+			LINK TO shiny below
 	> go after shiny
 		the shiny slows down enough for someone else to grab it
 		> punch them and take the shiny. reflect on your life choices and how a shiny has led you to a life of crime
@@ -30,7 +31,7 @@ see shiny
 var questions = [
 	[	"You see a fine shiny rolling down a street. You want the shiny.",
 		"Go after the shiny.",
-		"Reflect upon your life choices before going after the shiny."
+		"Reflect upon your life choices before going after the shiny.",
 		1,
 		2
 	],
@@ -40,18 +41,30 @@ var questions = [
 		2,
 		3
 	],
+	[	"Cars begin to honk behind you. They probably want you to stop reflecting upon your life choices in the middle of the street."
+		"Continue to reflect upon your life choices in the middle of the street.",
+		"The shiny's getting away! You return to the chase.",
+		"GAMEOVER",
+		x
+	],
 	[	"As you're chasing the shiny down the street, a truck barely misses you as you blindly chase the shiny. There are many more cars after the truck. The shiny is so far away now though. If only you hadn't reflected upon your life choices earlier.",
 		"Reflect further upon your life choices as you wait for the cars to pass.",
 		"Charge blindly into traffic. The shiny has top priority.",
-		"GAMEOVER2",
-		"GAMEOVER1"
+		"GAMEOVER",
+		x
 	],
-	[	"You catch the shiny! This is the best day of your life.",
-		"Throw the shiny to resume the chase and reflect upon your life choices.",
-		"Love the shiny. It is your's now.",
-		"GAMEOVER2",
-		"SUCCESS"
+	[	"You somehow survive blindly running into traffic, but the shiny is still far away. There is a biker nearby watching the scene you caused.",
+		"Push them off their bike and steal it. Reflect upon your life choices and how a shiny has led you to a life of crime.",
+		"Ignore them and continue to run after the shiny.",
+		x,
+		"GAMEOVER"
 	],
+	[	"The shiny is so close and slowing down, but someone picked it up. They observe it intently, oblivious to your presence.",
+		"Punch them and take the shiny. Reflect upon your life choices and how a shiny has led you to a life of crime.",
+		"Let the shiny go. Mourn as you reflect your life choices.",
+		"SUCCESS",
+		"GAMEOVER"
+	]
 ];
 
 function centerWrapper() {
