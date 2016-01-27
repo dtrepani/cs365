@@ -4,7 +4,7 @@ body {
 	font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	text-align: center;
-	background-image: url("bg.png");
+	background-image: url("img/bg.png");
 	color: #444;
 }
 
@@ -25,6 +25,7 @@ button {
 	font-size: 16px;
 	background-color: #0066cc;
 	width: 49%;
+	vertical-align: middle;
 }
 
 button:hover {
