@@ -48,7 +48,7 @@ function screenGameOver() {
 	$('#content').html("\
 		<img src=\"img/gameover.jpg\" alt=\"It got away!!!\" width=\"500px\" height=\"500px\">\
 		\
-		<br><br><p>The shiny got away! Now might be the time for you to reflect on your life choices.</p>");
+		<br><br><p>The shiny got away! Your life is as good as over. Now might be the time for you to reflect further upon your life choices.</p>");
 }
 
 function screenSuccess() {
