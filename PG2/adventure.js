@@ -1,7 +1,6 @@
 // The question, the first option, the second option,
 // Locations of next question for first and second option respectively.
 // 	However, "GAMEOVER" and "SUCCESS" leads to end screens.
-var step = 0;
 var questions = [
 	[	"You see a fine shiny rolling down a street. You want the shiny.",
 		"Go after the shiny.",
@@ -40,6 +39,7 @@ var questions = [
 		"GAMEOVER"
 	]
 ];
+var step = 0;
 
 function screenGameOver() {
 	$('body').css('background', 'url("img/bg_gameover.png")');
@@ -67,14 +67,25 @@ function screenStep() {
 	$('button[value="option2"]').text(questions[step][2]);
 }
 
-function centerWrapper() {
-	$('#wrapper').css({
-		'position': 'absolute',
-		'left': '50%',
-		'top': '50%',
-		'margin-left': -$('#wrapper').outerWidth()/2,
-		'margin-top': -$('#wrapper').outerHeight()/2,
-	});
+// When the window's height is shorter than the wrapper, the wrapper's top would be cut off with absolute positioning, so must set wrapper's position to relative in this case.
+var centerWrapper = function centerWrapper() {
+	if($('#wrapper').outerHeight() >= $(window).outerHeight()) {
+		$('#wrapper').css({
+			'position': 'relative',
+			'left': 'auto',
+			'top': 'auto',
+			'margin': 'auto',
+		});
+		$('body').css('padding', '10px');
+	} else {
+		$('#wrapper').css({
+			'position': 'absolute',
+			'left': '50%',
+			'top': '50%',
+			'margin-left': -$('#wrapper').outerWidth()/2,
+			'margin-top': -$('#wrapper').outerHeight()/2,
+		});
+	}
 }
 
 // The height is set to auto first to match the changing text within the button.
@@ -103,6 +114,8 @@ function main() {
 	setupButton(2);
 	screenStep();
 	matchButtonHeightAndCenterWrapper();
+
+	$(window).resize(centerWrapper);
 }
 
 $(main);
