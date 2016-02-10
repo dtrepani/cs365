@@ -1,0 +1,63 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	background: #444;
+	color: #fff;
+	border: none;
+	padding: 10px;
+	min-width: 100px;
+}
+
+button:hover {
+	background: #333;
+}
+
+button:disabled {
+	color: #ddd;
+	background: #999;
+}
+
+button:active {
+	color: #eee;
+	background: #555;
+}
+
+#wrapper {
+	margin: 25px auto 0;
+	text-align: center;
+}
+
+.row {
+	display: table;
+	margin: 25px auto;
+	height: 400px;
+}
+
+.row div {
+	display: table-cell;
+}
+
+.side {
+	width: 150px;
+}
+
+.side button {
+	display: block;
+	margin: 5px auto;
+}
+
+.side button:first-child {
+	margin-top: 0;
+}
+
+.side button:last-child {
+	margin-bottom: 0;
+}
+
+#river {
+	background-color: #3B62D0;
+	width: 300px;
+}
