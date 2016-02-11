@@ -1,6 +1,15 @@
-html, body {
+* {
 	margin: 0;
 	padding: 0;
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+h1 {
+	font-size: 100px;
+	margin: 50px 0;
 }
 
 input[type="button"] {
@@ -23,6 +32,32 @@ input[type="button"].disabled, input[type="button"].disabled:hover, input[type="
 input[type="button"]:active {
 	color: #eee;
 	background: #555;
+}
+
+.overlay {
+	display: none;
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	text-align: center;
+	vertical-align: middle;
+}
+
+.overlay p {
+	margin-bottom: 50px;
+}
+
+#win, #game-over {
+	display: none;
+}
+
+.is-visible {
+	display: block !important;
+	opacity: 1;
 }
 
 #wrapper {
