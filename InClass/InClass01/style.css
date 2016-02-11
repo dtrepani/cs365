@@ -3,7 +3,7 @@ html, body {
 	padding: 0;
 }
 
-button {
+input[type="button"] {
 	background: #444;
 	color: #fff;
 	border: none;
@@ -11,16 +11,16 @@ button {
 	min-width: 100px;
 }
 
-button:hover {
+input[type="button"]:hover {
 	background: #333;
 }
 
-button:disabled {
+input[type="button"].disabled, input[type="button"].disabled:hover, input[type="button"].disabled:active {
 	color: #ddd;
 	background: #999;
 }
 
-button:active {
+input[type="button"]:active {
 	color: #eee;
 	background: #555;
 }
@@ -42,18 +42,19 @@ button:active {
 
 .side {
 	width: 150px;
+	vertical-align: top;
 }
 
-.side button {
+.side input[type="button"] {
 	display: block;
 	margin: 5px auto;
 }
 
-.side button:first-child {
+.side input[type="button"]:first-child {
 	margin-top: 0;
 }
 
-.side button:last-child {
+.side input[type="button"]:last-child {
 	margin-bottom: 0;
 }
 
