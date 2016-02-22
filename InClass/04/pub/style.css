@@ -1,0 +1,25 @@
+* { margin: 0; padding: 0; }
+
+#container {
+	width: 800px;
+	margin: 20px auto;
+}
+
+#results {
+	border-collapse: collapse;
+	margin: auto;
+}
+
+#results td {
+	border: 1px solid #444;
+	width: 50px;
+	height: 50px;
+	content: "";
+	text-align: center;
+	font-family: Arial, sans-serif;
+}
+
+.table-header, #results tr td:first-child {
+	background-color: #ddd;
+	text-weight: bold;
+}
