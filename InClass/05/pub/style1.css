@@ -1,0 +1,50 @@
+h1 {
+	text-align: center;
+	color: white;
+}
+
+#tugOfWarContainer {
+	position: relative;
+	overflow: hidden;
+	width: 992px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#foreground {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1;
+}
+
+#buttonContainer {
+	text-align: center;
+}
+
+body {
+	background-color: #530;
+}
+
+.overlay {
+	display: none;
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	text-align: center;
+	vertical-align: middle;
+	zindex: 1000;
+}
+
+#win, #lose {
+	display: none;
+}
+
+.is-visible {
+	display: block !important;
+	opacity: 1;
+}
