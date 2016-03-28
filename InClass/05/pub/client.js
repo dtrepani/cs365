@@ -2,36 +2,36 @@ var socket = io();
 
 function main() {
 	socket.emit("getPos");
-	$("#left").click({moveLeft: true}, moveDog);
-	$("#right").click({moveLeft: false}, moveDog);
-	$("#reset").click(reset);
+	$("#tug").click(moveDog);
+	$("#reset").click(resetServer);
 	socket.on("updatePos", moveToPosition);
-	socket.on("gameWon", gameWon); // TODO: may not need to know who won. Let server tell clients if they won or lost
+	socket.on("leftWon", leftWon);
+	socket.on("rightWon", rightWon);
+	socket.on("resetClient", resetClient);
 }
 
 function moveDog(event) {
-	socket.emit("moveDog", event.data.moveLeft);
+	socket.emit("moveDog");
 }
 
-function reset() {
+function resetClient() {
 	$('.overlay').removeClass('is-visible');
-	$('#win').removeClass('is-visible');
-	$('#lose').removeClass('is-visible');
+	$('#left').removeClass('is-visible');
+	$('#right').removeClass('is-visible');
+}
+
+function resetServer() {
 	socket.emit("reset");
 }
 
-function gameWon(leftWon) {
-	userWon();
+function leftWon() {
+	$('.overlay').addClass('is-visible');
+	$('#left').addClass('is-visible');
 }
 
-function userWon() {
+function rightWon() {
 	$('.overlay').addClass('is-visible');
-	$('#win').addClass('is-visible');
-}
-
-function userLost() {
-	$('.overlay').addClass('is-visible');
-	$('#lose').addClass('is-visible');
+	$('#right').addClass('is-visible');
 }
 
 function moveToPosition(pos) {

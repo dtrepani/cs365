@@ -1,4 +1,3 @@
-//This part is the same as usual...
 var express = require("express");
 var app = express();
 
@@ -10,19 +9,18 @@ var io = socketio(server);
 app.use(express.static("pub"));
 
 var gameWon = false;
-var relativePos = 0;
 var players = {};
 var spectators = [];
+var pieces = new Array([]);
 
 io.on("connection", function(socket) {
-	assignToSide(socket);
+	assignToColor(socket);
 
 	if (isNotSpectator(socket)) {
-		socket.on("reset", reset);
-		socket.on("moveDog", moveDog.bind(null, socket));
+
 	}
 
-	socket.on("getPos", sendPosToClient);
+	socket.on("getPieces", sendPiecesToClient.bind(null, socket));
 	socket.on("disconnect", disconnect.bind(null, socket));
 });
 
@@ -31,11 +29,11 @@ server.listen(8037, function() {
 });
 
 /** Only the players are kept tracked of. Any additional players are ignored. */
-function assignToSide(socket) {
+function assignToColor(socket) {
 	setPlayerTo(null, socket);
 
 	if (gameWon) {
-		socket.emit((relativePos < 0) ? "leftWon" : "rightWon");
+		// socket.emit((relativePos < 0) ? "redWon" : "blackWon");
 	}
 }
 
@@ -45,34 +43,19 @@ function disconnect(socket) {
 
 /** Only players can play the game. */
 function isNotSpectator(socket) {
-	return (players['left'] === socket || players['right'] === socket);
-}
-
-function moveDog(socket) {
-	if(!gameWon) {
-		relativePos += ((players['left'] === socket) ? -10 : 10);
-
-		sendPosToClient();
-
-		if (Math.abs(relativePos) > 100) {
-			io.emit((relativePos < 0) ? "leftWon" : "rightWon");
-			gameWon = true;
-		}
-	}
+	return (players['red'] === socket || players['black'] === socket);
 }
 
 function reset() {
 	if (gameWon) {
 		console.log("Resetting game.");
-		relativePos = 0;
 		gameWon = false;
 		io.emit("resetClient");
-		sendPosToClient();
 	}
 }
 
-function sendPosToClient() {
-	io.emit("updatePos", relativePos);
+function sendPiecesToClient(socket) {
+	socket.emit("updatePieces", pieces);
 }
 
 /**
@@ -84,13 +67,13 @@ function sendPosToClient() {
 * @return	bool		Whether or not the player was found
 */
 function setPlayerTo(comparison, newPlayer) {
-	if (players['left'] == comparison) {
-		players['left'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
+	if (players['red'] == comparison) {
+		players['red'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
  		return true;
 	}
 
-	if (players['right'] == comparison) {
-		players['right'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
+	if (players['black'] == comparison) {
+		players['black'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
 		return true;
 	}
 

@@ -37,10 +37,15 @@ body {
 	background-color: rgba(255, 255, 255, 0.9);
 	text-align: center;
 	vertical-align: middle;
-	zindex: 1000;
+	z-index: 1000;
 }
 
-#win, #lose {
+.overlay h1 {
+	font-size: 100px;
+	color: black;
+}
+
+#left, #right {
 	display: none;
 }
 

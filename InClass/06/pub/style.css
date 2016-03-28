@@ -1,0 +1,12 @@
+#board td {
+	width: 20px;
+	height: 20px;
+}
+
+.red {
+	background: red;
+}
+
+.black {
+	background: black;
+}
