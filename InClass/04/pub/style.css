@@ -1,8 +1,8 @@
-* { margin: 0; padding: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 #container {
-	width: 800px;
-	margin: 20px auto;
+	text-align: center;
+	margin: auto;
 }
 
 #results {
@@ -10,16 +10,35 @@
 	margin: auto;
 }
 
-#results td {
+#results td, #results th {
 	border: 1px solid #444;
 	width: 50px;
 	height: 50px;
-	content: "";
 	text-align: center;
 	font-family: Arial, sans-serif;
 }
 
-.table-header, #results tr td:first-child {
-	background-color: #ddd;
+#results td {
+	background: #E2E2E2;
+}
+
+#results th {
 	text-weight: bold;
+	border: none;
+}
+
+.win {
+	background: #66ff99 !important;
+}
+
+.lose {
+	background: #ff6666 !important;
+}
+
+.draw {
+	background: #d98cd9 !important;
+}
+
+.x {
+	background: #707070 !important;
 }

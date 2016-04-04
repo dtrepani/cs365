@@ -21,7 +21,7 @@ function updateBoard() {
 			$('#board').append("<td class='" + pieces[i][j] + "'>" + piece + "</td>");
 
 			if (i === 12) {
-				$('#board').append('</tr><tr>');
+				$('#board').append('</tr>' + (j === 12) ? '' : '<tr>');
 			}
 		}
 	}
