@@ -1,12 +1,55 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+	font: 16px Arial, sans-serif;
+	color: #777;
+}
+
+#container {
+	text-align: center;
+	margin: auto;
+}
+
+.headfoot {
+	font-size: 20px;
+	font-weight: bold;
+	margin: auto;
+	text-transform: uppercase;
+	width: 520px;
+}
+
+#role {
+	float: left;
+	text-align: left;
+	width: 20%;
+}
+
+#status {
+	float: left;
+	text-align: right;
+	width: 80%;
+}
+
+#board {
+	clear: both;
+	border-collapse: collapse;
+	margin: auto;
+	border: 1px solid #aaa;
+	font-size: 28px;
+	table-layout: fixed;
+}
+
 #board td {
-	width: 20px;
-	height: 20px;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	color: #aaa;
 }
 
 .red {
-	background: red;
+	color: red !important;
 }
 
 .black {
-	background: black;
+	color: black !important;
 }

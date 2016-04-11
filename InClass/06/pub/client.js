@@ -1,35 +1,75 @@
+'use strict';
+
 var socket = io();
 var pieces = [];
+var status = '';
+var boardSize = 13;
 
 function main() {
-	updateBoard();
-	socket.on("updatePieces", updatePieces);
+	socket.emit('getData');
+	socket.on('updateData', updateData);
+	socket.on('setRole', setRole);
+
+	setupClicks();
+
+	// Firefox error fix
+	$(window).on('beforeunload', function(){
+    	socket.close();
+	});
 }
 
-function updateBoard() {
-	var i, j, piece;
-
-	socket.emit("getPieces");
-	console.log(pieces);
-	$('#board').empty();
-	$('#board').append('<table><tr>');
-
-	for (i = 0; i < 13; i++) {
-		for (j = 0; j < 13; j++) {
-			piece = pieces[i][j] ? '&#8226;' : '';
-
-			$('#board').append("<td class='" + pieces[i][j] + "'>" + piece + "</td>");
-
-			if (i === 12) {
-				$('#board').append('</tr>' + (j === 12) ? '' : '<tr>');
-			}
-		}
+function getAppend(i, j) {
+	var piece, pieceClass;
+	if (pieces[i][j] === null) {
+		piece = '+';
+		pieceClass = 'none';
+	} else {
+		piece = '&#11044;';
+		pieceClass = pieces[i][j];
 	}
-	$('#board').append('</table>');
+	return "<td class='" + pieceClass + "'>" + piece + "</td>";
 }
 
-function updatePieces(aPieces) {
-	pieces = aPieces;
+function setRole(role) {
+	$('#role').html("<div class='" + role + "'>" + role + "</div>");
+}
+
+function setupClicks() {
+	$("#board").on(
+		"click",
+		"td",
+		function() {
+			var row = $(this).closest("tr").index();
+			var col = $(this).index();
+
+			socket.emit('makeMove', {row: row, col: col});
+		}
+	);
+}
+
+function updateView() {
+	var i, j, piece;
+	var board = "";
+
+	$("#status").html(status);
+
+	for(var i = 0; i < boardSize; i++) {
+		board += "<tr>";
+
+ 		for (var j = 0; j < boardSize; j++) {
+			board += getAppend(i, j);
+		}
+
+		board += "</tr>";
+	}
+
+	$("#board").html(board);
+}
+
+function updateData(data) {
+	status = data.status
+	pieces = data.pieces;
+	updateView();
 }
 
 $(main);

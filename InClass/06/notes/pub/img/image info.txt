@@ -1,0 +1,18 @@
+Red and blue flag are based on the public domain image at:
+	http://www.clker.com/clipart-capture-the-flag-red.html
+
+Game piece images are based on military insignia, which are public domain works of the US government (obtained from Wikipedia).
+
+Spy graphic is a modification of the specialist rank insignia.
+
+Bomb graphic was created by Dea.
+
+paper017.jpg is a free image from http://www.grsites.com/archive/textures/
+
+map is a modification of a public domain image:
+	https://commons.wikimedia.org/wiki/File:Totius_S_R_I_Circuli_Suevici_Tabula_Chorographica.jpg
+
+Sounds are from http://www.grsites.com/archive/sounds/
+	battle002.mp3
+	battle020.mp3
+	battle035.mp3
