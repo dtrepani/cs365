@@ -1,4 +1,0 @@
-
-socket.join(roomName); //This is to make a socket join a room.
-socket.leave(roomName); //This is to make a socket leave a room.
-io.in(roomName).emit(...); //This sends to all sockets in a room.

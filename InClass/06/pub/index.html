@@ -9,17 +9,23 @@
 		<script src="client.js" type="text/javascript"></script>
 	</head>
 	<body>
+		<div class="overlay">
+			<h1 id="red-won">RED WINS</h1>
+			<h1 id="black-won">BLACK WINS</h1>
+			<input type="button" value="Reset?" id="reset">
+		</div>
+
 		<div id="container">
 			<h1>Pente</h1>
 			<div class ="headfoot">
-				<div id="role"></div>
-				<div id="status"></div>
+				<div id="role" class="to-left"></div>
+				<div id="status" class="to-right"></div>
 			</div>
 			<table id="board">
 			</table>
 			<div class="headfoot">
-				<div id="set-red"></div>
-				<div id="set-black"></div>
+				<div id="score-red" class="to-left"></div>
+				<div id="score-black" class="to-right"></div>
 			</div>
 		</div>
 	</body>

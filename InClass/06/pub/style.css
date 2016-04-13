@@ -18,16 +18,26 @@ body {
 	width: 520px;
 }
 
-#role {
+.to-left {
 	float: left;
 	text-align: left;
+}
+
+.to-right {
+	float: left;
+	text-align: right;
+}
+
+#role {
 	width: 20%;
 }
 
 #status {
-	float: left;
-	text-align: right;
 	width: 80%;
+}
+
+#score-black, #score-red {
+	width: 50%;
 }
 
 #board {
@@ -52,4 +62,33 @@ body {
 
 .black {
 	color: black !important;
+}
+
+
+.overlay {
+	display: none;
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	text-align: center;
+	vertical-align: middle;
+	z-index: 1000;
+}
+
+.overlay h1 {
+	font-size: 100px;
+	color: black;
+}
+
+#red-won, #black-won {
+	display: none;
+}
+
+.is-visible {
+	display: block !important;
+	opacity: 1;
 }

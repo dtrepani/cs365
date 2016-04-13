@@ -4,6 +4,7 @@ var app = express();
 var http = require("http");
 var server = http.Server(app);
 var socketio = require("socket.io");
+var player = require("./player.js");
 var io = socketio(server);
 
 app.use(express.static("pub"));
@@ -21,20 +22,22 @@ io.on("connect", function(socket) {
 
 	if (isNotSpectator(socket)) {
 		socket.on('makeMove', function(data) {
+			var result;
 			var row = data.row;
 			var col = data.col;
 
-			if (!pieces[row][col]) {
-				if (isRedPlayer(socket) && redTurn) {
-					pieces[row][col] = 'red';
-					redTurn = false;
-				} else if (isBlackPlayer(socket) && !redTurn) {
-					pieces[row][col] = 'black';
-					redTurn = true;
-				}
-
-				sendDataToClients();
+			if (redTurn) {
+				result = players.red.makeMove(socket, pieces, row, col);
+				redTurn = !result.success;
+				pieces = result.pieces;
+			} else {
+				result = players.black.makeMove(socket, pieces, row, col);
+				redTurn = result.success;
+				pieces = result.pieces;
 			}
+
+			sendDataToClients();
+			checkForWin();
 		});
 
 		 // Update if other player connected.
@@ -43,6 +46,7 @@ io.on("connect", function(socket) {
 
 	socket.on('getData', sendDataToClient.bind(null, socket));
 	socket.on('disconnect', disconnect.bind(null, socket));
+	socket.on('reset', reset);
 
 	function disconnect(socket) {
 		setPlayerTo(socket, null);
@@ -57,56 +61,41 @@ io.on("connect", function(socket) {
 server.listen(8037, function() {
 	console.log("Server is listening on port 8037");
 	initBoard();
+	players.red = new player.Player(null, 'red');
+	players.black = new player.Player(null, 'black');
 });
 
 /** Only the players are kept tracked of. Any additional players are ignored. */
 function assignToColor(socket) {
 	setPlayerTo(null, socket);
+	checkForWin();
+}
 
-	if (gameWon) {
-		// socket.emit((relativePos < 0) ? "redWon" : "blackWon");
+function checkForWin() {
+	if (players.red.getScore() === 10) {
+		gameWon = true;
+		io.emit('redWon');
+	} else if (players.black.getScore() === 10) {
+		gameWon = true;
+		io.emit('blackWon');
 	}
-}
-
-function capturedPieces(socket, row, col) {
-	if (captureWithinBounds(row) && captureWithinBounds(col)) {
-		for (int i = -2; i < 2; i++) {
-			for (int j = -2; j < 2; j++) {
-				if (!(i === 0) || !(j === 0)) {
-
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-function isOtherPlayersPiece(socket, row, col) {
-	return (
-		(isRedPlayer(socket) &&
-			(pieces[row][col] === 'blue')) ||
-		(isBluePlayer(socket)
-			&& (pieces[row][col] === 'red'))
-	);
-}
-
-/** When checking for a capture, the capture must be within the bounds of the board to be possible.*/
-function captureWithinBounds(number) {
-	return (number + 2 < boardSize && number - 2 >= 0);
 }
 
 function getData() {
 	return {
 		status: getStatus(),
-		pieces: pieces
+		pieces: pieces,
+		scores: {
+			red: players.red.getScore(),
+			black: players.black.getScore()
+		}
 	};
 }
 
 function getRole(socket) {
-	return isRedPlayer(socket)
+	return players.red.isSocket(socket)
 			? 'red'
-				: isBlackPlayer(socket)
+				: players.black.isSocket(socket)
 					? 'black'
 					: 'spectator';
 }
@@ -121,29 +110,27 @@ function getStatus() {
 
 // Initialize board to empty 13 x 13 array.
 function initBoard() {
+	pieces = new Array(boardSize);
 	for (var i = 0; i < boardSize; i++) {
 		pieces[i] = new Array(boardSize);
 	}
 }
 
-function isBlackPlayer(comparison) {
-	return (players['black'] == comparison);
-}
-
-function isRedPlayer(comparison) {
-	return (players['red'] == comparison);
-}
-
 /** Only players can play the game. */
 function isNotSpectator(socket) {
-	return (isRedPlayer(socket) || isBlackPlayer(socket));
+	return (players.red.isSocket(socket) ||
+		players.black.isSocket(socket));
 }
 
 function reset() {
 	if (gameWon) {
 		console.log("Resetting game.");
+		initBoard();
+		players.red.setScore(0);
+		players.black.setScore(0);
+		sendDataToClients();
+		io.emit('resetClient');
 		gameWon = false;
-		io.emit("resetClient");
 	}
 }
 
@@ -151,22 +138,24 @@ function sendDataToClients() {
 	io.emit('updateData', getData());
 }
 
-/**
-* Find and set the appropriate player, if it exists.
-*
-* @param	comparison	mixed	Find the player according to this parameter
-* @param	newPlayer	mixed	Set the player to a new value
-*
-* @return	bool		Whether or not the player was found
-*/
-function setPlayerTo(comparison, newPlayer) {
-	if (isRedPlayer(comparison)) {
-		players['red'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
+function setPlayer(color, comparison, newPlayer) {
+	if (players[color].isSocket(comparison)) {
+		if (!newPlayer && spectators[0]) {
+			players[color].setSocket(spectators.pop())
+		} else {
+			players[color].setSocket(newPlayer);
+		}
  		return true;
 	}
+	return false;
+}
 
-	if (isBlackPlayer(comparison)) {
-		players['black'] = (!newPlayer && spectators[0]) ? spectators.pop() : newPlayer;
+function setPlayerTo(comparison, newPlayer) {
+	if (setPlayer('red', comparison, newPlayer)) {
+		return true;
+	}
+
+	if (setPlayer('black', comparison, newPlayer)) {
 		return true;
 	}
 
@@ -177,5 +166,5 @@ function setPlayerTo(comparison, newPlayer) {
 }
 
 function waitingForPlayer() {
-	return !(players['red'] && players['black']);
+	return (players.red.isSocket(null) || players.black.isSocket(null));
 }

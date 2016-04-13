@@ -2,6 +2,7 @@
 
 var socket = io();
 var pieces = [];
+var scores = {};
 var status = '';
 var boardSize = 13;
 
@@ -9,6 +10,9 @@ function main() {
 	socket.emit('getData');
 	socket.on('updateData', updateData);
 	socket.on('setRole', setRole);
+	socket.on('redWon', redWon);
+	socket.on('blackWon', blackWon);
+	socket.on('resetClient', resetClient);
 
 	setupClicks();
 
@@ -35,6 +39,7 @@ function setRole(role) {
 }
 
 function setupClicks() {
+	$("#reset").click(resetServer);
 	$("#board").on(
 		"click",
 		"td",
@@ -52,14 +57,14 @@ function updateView() {
 	var board = "";
 
 	$("#status").html(status);
+	$("#score-red").html("Red: " + scores.red);
+	$("#score-black").html("Black: " + scores.black);
 
 	for(var i = 0; i < boardSize; i++) {
 		board += "<tr>";
-
  		for (var j = 0; j < boardSize; j++) {
 			board += getAppend(i, j);
 		}
-
 		board += "</tr>";
 	}
 
@@ -69,7 +74,28 @@ function updateView() {
 function updateData(data) {
 	status = data.status
 	pieces = data.pieces;
+	scores = data.scores;
 	updateView();
+}
+
+function resetClient() {
+	$('.overlay').removeClass('is-visible');
+	$('#red-won').removeClass('is-visible');
+	$('#black-won').removeClass('is-visible');
+}
+
+function resetServer() {
+	socket.emit("reset");
+}
+
+function redWon() {
+	$('.overlay').addClass('is-visible');
+	$('#red-won').addClass('is-visible');
+}
+
+function blackWon() {
+	$('.overlay').addClass('is-visible');
+	$('#black-won').addClass('is-visible');
 }
 
 $(main);
