@@ -4,12 +4,120 @@
 		<meta charset="utf-8">
 		<title>Durak</title>
 		<link href="style.css" rel="stylesheet" type="text/css">
-		<script src="jquery-1.12.0.js" type="text/javascript"></script>
-		<script src="/socket.io/socket.io.js" type="text/javascript"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="jquery-1.12.0.min.js" type="text/javascript"></script>
 		<script src="client.js" type="text/javascript"></script>
+
 	</head>
 	<body>
-		<div id="container">
+		<p id="titleName">Durak</p>
+
+		<div id="loginDiv" class="section">
+			<input type="text" name="username" id="username">
+			<br>
+			<button type="button" id="loginButton">Login</button>
+			<br>
+			<p id="nameWarning"></p>
 		</div>
+
+		<!-- ---------------------- -->
+		<div class="roomSection">
+			<div id="roomDiv" class="section">
+				<div id="room1" class ="room">
+					<p id='r1p1' class="playerName">...</p>
+					<p id='r1p2' class="playerName">...</p>
+					<p id='r1p3' class="playerName">...</p>
+					<p id='r1p4' class="playerName">...</p>
+					<img id="lock1room" class="lock" src="lock.png" width="30" height="30">
+					<button id="joinRoom1Btn" class="joinBtn">join</button>
+				</div>
+
+				<div id="room2" class ="room">
+					<p id='r2p1' class="playerName">...</p>
+					<p id='r2p2' class="playerName">...</p>
+					<p id='r2p3' class="playerName">...</p>
+					<p id='r2p4' class="playerName">...</p>
+					<img id="lock2room" class="lock" src="lock.png" width="30" height="30">
+					<button id="joinRoom2Btn" class="joinBtn" >join</button>
+				</div>
+
+				<div id="room3" class ="room">
+					<p id='r3p1' class="playerName">...</p>
+					<p id='r3p2' class="playerName">...</p>
+					<p id='r3p3' class="playerName">...</p>
+					<p id='r3p4' class="playerName">...</p>
+					<img id="lock3room" class="lock" src="lock.png" width="30" height="30">
+					<button id="joinRoom3Btn" class="joinBtn">join</button>
+				</div>
+
+				<div id="room4" class ="room">
+					<p id='r4p1' class="playerName">...</p>
+					<p id='r4p2' class="playerName">...</p>
+					<p id='r4p3' class="playerName">...</p>
+					<p id='r4p4' class="playerName">...</p>
+					<img id="lock4room" class="lock" src="lock.png" width="30" height="30" >
+					<button id="joinRoom4Btn" class="joinBtn">join</button>
+				</div>
+
+				<div id="room5" class ="room">
+					<p id='r5p1' class="playerName">...</p>
+					<p id='r5p2' class="playerName">...</p>
+					<p id='r5p3' class="playerName">...</p>
+					<p id='r5p4' class="playerName">...</p>
+					<img id="lock5room" class="lock" src="lock.png" width="30" height="30" >
+					<button id="joinRoom5Btn" class="joinBtn">join</button>
+				</div>
+
+				<div id="room6" class ="room">
+					<p id='r6p1' class="playerName">...</p>
+					<p id='r6p2' class="playerName">...</p>
+					<p id='r6p3' class="playerName">...</p>
+					<p id='r6p4' class="playerName">...</p>
+					<img id="lock6room" class="lock" src="lock.png" width="30" height="30" >
+					<button id="joinRoom6Btn" class="joinBtn">join</button>
+				</div>
+			</div>
+
+			<p id="msgRoom"></p>
+			<div id="waitDiv">
+				<h1 id="userInRoomText">You are in room #1</h1>
+				<button id="exitRoomBtn">Exit room</button>
+				<button id="readyBtn">ready</button>
+				<div id="listPlayersInRoom">
+					<p id="p0"> </p>
+					<p id="p1"> </p>
+					<p id="p3"> </p>
+					<p id="p4"> </p>
+
+				</div>
+			</div>
+
+		</div>
+		<!-- ---------------------- -->
+
+		<div id="mainDiv" class="section">
+
+				<P id="info">success</p> <!-- My name is - , other players are - , room number is -  -->
+
+
+				<p id="p0name"></p>
+				<p id="p1name"></p>
+				<p id="p2name"></p>
+				<p id="p3name"></p>
+			<!--	<div="my_deck">	</div>
+				<div="oppos_deck">	</div>
+				<div="left_deck">	</div>
+				<div="right_deck">	</div> -->
+		</div>
+
+		<!-- ---------------------- -->
+
+		<div id="modalDiv">
+			<div id="modalWindow">
+				<p id="resultText"> Congratulations!!! YOU ARE WINNER</p>
+				<button type="button" id="playAgain">Play again</button>
+			</div>
+		</div>
+
 	</body>
 </html>

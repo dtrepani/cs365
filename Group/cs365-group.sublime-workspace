@@ -1,0 +1,1858 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"calen",
+				"calendarWidgetService"
+			],
+			[
+				"getJoined",
+				"getJoinedActivityWithParent"
+			],
+			[
+				"recurr",
+				"recurrenceTable"
+			],
+			[
+				"recurre",
+				"recurrenceBindings"
+			],
+			[
+				"check",
+				"checkAuthentication	(app.controller.js)"
+			],
+			[
+				"cl",
+				"cl"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "server.js",
+			"settings":
+			{
+				"buffer_size": 5086,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pub/client.js",
+			"settings":
+			{
+				"buffer_size": 2865,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pub/index.html",
+			"settings":
+			{
+				"buffer_size": 3863,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "room.js",
+			"settings":
+			{
+				"buffer_size": 6375,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "player.js",
+			"settings":
+			{
+				"buffer_size": 1788,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Users/finap/Downloads/Durak_v1.0/server.js",
+			"settings":
+			{
+				"buffer_size": 3973,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/style.css",
+			"settings":
+			{
+				"buffer_size": 2538,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/client.js",
+			"settings":
+			{
+				"buffer_size": 2891,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/index.html",
+			"settings":
+			{
+				"buffer_size": 3924,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 320.0,
+		"last_filter": "jshint",
+		"selected_items":
+		[
+			[
+				"jshint",
+				"JSHint: Clear Annotations"
+			],
+			[
+				"tabs",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"conver to spa",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"spaces",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"conver to space",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"diff",
+				"Git: Diff Tool Current File"
+			],
+			[
+				"to spaces",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"phpcs",
+				"PHP Code Sniffer: Switch coding standard"
+			],
+			[
+				"conver to ",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"colro scheme",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"beautif",
+				"PHP Coding Standards Fixer: Fix this file (PHP Code Beautifier)"
+			],
+			[
+				"enable lint",
+				"SublimeLinter: Enable Linting"
+			],
+			[
+				"disabl",
+				"SublimeLinter: Disable Linting"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"disable pack",
+				"Package Control: Disable Package"
+			],
+			[
+				"auto comple",
+				"AngularJS: Toggle - Disable All Completions"
+			],
+			[
+				"enable live",
+				"SublimeCodeIntel: Enable Live Autocompletion for Current Language"
+			],
+			[
+				"disable",
+				"SublimeCodeIntel: Disable Live Autocompletion"
+			],
+			[
+				"convert to space",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"beaut",
+				"PHP Coding Standards Fixer: Fix this file (PHP Code Beautifier)"
+			],
+			[
+				"autocomplete",
+				"SublimeCodeIntel: Enable Live Autocompletion for Current Language"
+			],
+			[
+				"user",
+				"Preferences: Settings - User"
+			],
+			[
+				"print to html",
+				"Print to HTML: print as HTML via browser"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"syntax c++",
+				"Set Syntax: C++"
+			],
+			[
+				"phpcs beauti",
+				"PHP Coding Standards Fixer: Fix this file (PHP Code Beautifier)"
+			],
+			[
+				"lint",
+				"SublimeLint: Show All Errors"
+			],
+			[
+				"php",
+				"PHP Code Sniffer: Sniff this file"
+			],
+			[
+				"sniff",
+				"PHP Code Sniffer: Sniff this file"
+			],
+			[
+				"install pac",
+				"Package Control: Install Package"
+			],
+			[
+				"git diff",
+				"Git: Diff Current File"
+			],
+			[
+				"list pack",
+				"Package Control: List Packages"
+			],
+			[
+				"install pack",
+				"Package Control: Install Package"
+			],
+			[
+				"php code sniffer",
+				"PHP Code Sniffer: Switch coding standard"
+			],
+			[
+				"remove pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"list package",
+				"Package Control: List Packages"
+			],
+			[
+				"indent",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"colorscheme",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"theme",
+				"Themr: List themes"
+			],
+			[
+				"teh",
+				"Themr: List themes"
+			],
+			[
+				"packa",
+				"Package Control: Disable Package"
+			],
+			[
+				"vim",
+				"Vintageous: Toggle Vim Ctrl Keys"
+			],
+			[
+				"view",
+				"View In Browser"
+			],
+			[
+				"ftp",
+				"SFTP: Setup Server…"
+			],
+			[
+				"syntax:c",
+				"Set Syntax: C"
+			],
+			[
+				"syntax c",
+				"Set Syntax: C"
+			],
+			[
+				"racket",
+				"SublimeREPL: Racket"
+			],
+			[
+				"compare",
+				"GitGutter: Compare Against HEAD"
+			],
+			[
+				"syntax bat",
+				"Set Syntax: Batch File"
+			],
+			[
+				"list theme",
+				"Themr: List themes"
+			],
+			[
+				"colorsch",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"color",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"theme	",
+				"Themr: List themes"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"syntax ",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"syntax vim",
+				"Set Syntax: Vintageous Command Line"
+			],
+			[
+				"syntax bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"colorsub",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"remove pac",
+				"Package Control: Remove Package"
+			],
+			[
+				"schem",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"scheme",
+				"ColorSchemeSelector: Next Color Scheme"
+			],
+			[
+				"list",
+				"Preferences: SublimeLint Settings – Default"
+			],
+			[
+				"colorsc",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"colorsche",
+				"ColorSchemeSelector: Select Color Scheme"
+			],
+			[
+				"theme ",
+				"Themr: List themes"
+			],
+			[
+				"theme twea",
+				"Theme Tweaker: Toggle Tweak Mode"
+			],
+			[
+				"themetw",
+				"Theme Tweaker: Toggle Tweak Mode"
+			],
+			[
+				"themr",
+				"Themr: List themes"
+			],
+			[
+				"remove packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove package",
+				"Package Control: Remove Package"
+			],
+			[
+				"package list",
+				"Package Control: List Packages"
+			],
+			[
+				"git",
+				"Git: Init"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"add Folder",
+				"Project: Add Folder"
+			],
+			[
+				"add Fold",
+				"Project: Add Folder"
+			],
+			[
+				"add",
+				"Project: Add Folder"
+			],
+			[
+				"add folder",
+				"Project: Add Folder"
+			],
+			[
+				"folder",
+				"Project: Add Folder"
+			],
+			[
+				"settings",
+				"Preferences: Settings - User"
+			],
+			[
+				"hosts",
+				"Open Hosts File"
+			],
+			[
+				"update",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"align",
+				"AlignTab: Table Mode"
+			],
+			[
+				"aligntab",
+				"AlignTab"
+			],
+			[
+				"assemb",
+				"Set Syntax: Assembly x86 (NASM)"
+			],
+			[
+				"",
+				"ASCII Decorator: Font Favorites"
+			],
+			[
+				"generate font",
+				"ASCII Decorator: Generate Font Test"
+			],
+			[
+				"package control settin",
+				"Preferences: Package Control Settings – User"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"syntax hex",
+				"Set Syntax: Hex"
+			],
+			[
+				"hex",
+				"Set Syntax: Hex"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			],
+			[
+				"syntax auto",
+				"Set Syntax: AutoHotkey"
+			],
+			[
+				"syntax html",
+				"Set Syntax: HTML"
+			],
+			[
+				"syntax ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 510.0
+	},
+	"console":
+	{
+		"height": 255.0,
+		"history":
+		[
+			"php",
+			"import urllib.request,os; pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Users/finap/git/cs365/Group",
+		"/D/Users/finap/git/cs365/Group/pub",
+		"/D/Users/finap/Downloads/Durak_v1.0/node_modules",
+		"/D/Users/finap/Downloads/Durak_v1.0/pub"
+	],
+	"file_history":
+	[
+		"/D/Users/finap/git/cs365/Group/deck.js",
+		"/D/Users/finap/git/cs365/Group/card.js",
+		"/C/Users/finap/AppData/Roaming/Sublime Text 3/Packages/JSHint Gutter/.jshintrc",
+		"/D/Users/finap/git/cs365/Group/pub/index.html",
+		"/D/Users/finap/git/cs365/Group/pub/style.css",
+		"/D/Users/finap/git/cs480/app/modules/events/modal/event.modal.service.js",
+		"/D/Users/finap/git/cs480/app/modules/tasks/modal/task.modal.service.js",
+		"/D/Users/finap/git/cs480/app/modules/tasks/tasks.directive.js",
+		"/D/Users/finap/git/cs480/app/modules/tasks/tasks.controller.js",
+		"/D/Users/finap/git/cs480/app/index.html",
+		"/D/Users/finap/git/cs480/app/pages/dashboard/dashboard.controller.js",
+		"/D/Users/finap/git/cs480/app/modules/events/widget/calendar.widget.service.js",
+		"/D/Users/finap/git/cs480/app/filters/same-day-as.filter.js",
+		"/D/Users/finap/git/cs480/app/api/user/Authentication.php",
+		"/D/Users/finap/git/cs480/app/api/session/Session.php",
+		"/D/Users/finap/git/cs480/app/api/session/SessionHandler.php",
+		"/D/Users/finap/git/cs480/app/content/scss/base/_core.scss",
+		"/D/Users/finap/git/cs480/app/modules/events/modal/event.modal.html",
+		"/D/Users/finap/git/cs480/app/modules/tasks/modal/task.modal.html",
+		"/D/Users/finap/git/cs480/app/content/scss/modules/_forms.scss",
+		"/D/Users/finap/git/cs480/app/api/database/createTables.sql",
+		"/D/Users/finap/git/cs480/app/modules/events/calendar.widget.service.js",
+		"/D/Users/finap/git/cs480/app/core/app.controller.js",
+		"/D/Users/finap/git/cs480/app/modules/events/events.controller.js",
+		"/D/Users/finap/git/cs480/app/core/app.routes.js",
+		"/D/Users/finap/git/cs480/app/modules/events/events.directive.js",
+		"/D/Users/finap/git/cs480/app/api/database/Database.php",
+		"/D/Users/finap/git/cs480/app/api/activity/calendar/calendarManager.php",
+		"/D/Users/finap/git/cs480/app/api/activity/calendar/eventManager.php",
+		"/D/Users/finap/git/cs480/app/api/crud/CrudManager.php",
+		"/D/Users/finap/git/cs480/app/api/activity/calendar/Event.php",
+		"/D/Users/finap/git/cs480/app/content/scss/modules/_task-lists.scss",
+		"/D/Users/finap/git/cs480/app/services/crud.service.js",
+		"/D/Users/finap/git/cs480/app/modules/events/calendar/calendar.service.js",
+		"/D/Users/finap/git/cs480/app/modules/tasks/label/label.service.js",
+		"/D/Users/finap/git/cs480/app/modules/events/events.service.js",
+		"/D/Users/finap/git/cs480/app/modules/calendar/calendar.controller.js",
+		"/D/Users/finap/git/cs480/app/modules/calendar/calendar.directive.js",
+		"/D/Users/finap/git/cs480/app/modules/calendar/calendar.html",
+		"/D/Users/finap/git/cs480/app/modules/calendar/modal/event.modal.html",
+		"/D/Users/finap/git/cs480/app/modules/calendar/modal/event.modal.service.js",
+		"/D/Users/finap/git/cs480/app/modules/tasks/tasks.service.js",
+		"/D/Users/finap/git/cs480/app/modules/calendar/calendar.service.js",
+		"/D/Users/finap/git/cs480/app/content/scss/layout/_sidebar.scss",
+		"/D/Users/finap/git/cs480/app/content/scss/modules/_calendar.scss",
+		"/D/Users/finap/git/cs480/app/content/scss/layout/_header.scss",
+		"/D/Users/finap/git/cs480/app/content/scss/app.scss",
+		"/D/Users/finap/git/cs480/app/pages/register/register.html",
+		"/D/Users/finap/git/cs480/app/modules/login/login.html",
+		"/D/Users/finap/git/cs480/app/api/crud/CRUD.php",
+		"/D/Users/finap/git/cs480/app/api/crud/ActivityCRUD.php",
+		"/D/Users/finap/git/cs480/app/api/activity/task/taskManager.php",
+		"/D/Users/finap/git/cs480/app/api/activity/task/labelManager.php",
+		"/D/Users/finap/git/cs480/app/api/user/userManager.php",
+		"/D/Users/finap/git/cs480/test/unit/api/crud/ActivityCRUDTest.php",
+		"/D/Users/finap/git/cs480/app/api/ConvertArray.php",
+		"/D/Users/finap/git/cs480/test/unit/api/ConvertArrayTest.php",
+		"/D/Users/finap/git/cs480/app/modules/modal/modal.controller.js",
+		"/D/Users/finap/git/cs480/app/content/scss/base/_variables.scss",
+		"/D/Users/finap/git/cs480/package.json",
+		"/D/Users/finap/git/cs480/app/content/scss/base/_reset.scss",
+		"/D/Users/finap/git/cs480/app/content/css/reset.css",
+		"/D/Users/finap/git/cs480/app/api/activity/calendar/Calendar.php",
+		"/D/Users/finap/git/cs480/app/services/session.service.js",
+		"/D/Users/finap/git/cs480/app/pages/register/register.controller.js",
+		"/D/Users/finap/git/cs480/app/modules/login/login.controller.js",
+		"/D/Users/finap/git/cs480/app/pages/dashboard/dashboard.html",
+		"/D/Users/finap/git/cs480/app/api/activity/task/Task.php",
+		"/D/Users/finap/git/cs480/app/api/user/User.php",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/D/Users/finap/git/cs480/app/api/crud/ParentCRUD.php",
+		"/D/Users/finap/git/cs480/test/unit/api/crud/ParentCRUDTest.php",
+		"/D/Users/finap/git/cs480/app/api/activity/task/Label.php",
+		"/D/Users/finap/git/cs480/test/unit/api/crud/CRUDTest.php",
+		"/D/Users/finap/git/cs480/test/unit/api/user/UserTest.php",
+		"/D/Users/finap/git/cs480/app/modules/login/login.service.js",
+		"/D/Users/finap/git/cs480/app/api/activity/shared/recurrenceManager.php",
+		"/D/Users/finap/git/cs480/app/api/activity/tasks/task/taskManager.php",
+		"/D/Users/finap/git/cs480/app/api/activity/tasks/task/Task.php",
+		"/D/Users/finap/git/cs480/app/api/activity/tasks/label/Label.php",
+		"/D/Users/finap/git/cs480/app/api/activity/calendars/event/Event.php",
+		"/D/Users/finap/git/cs480/app/api/activity/calendars/calendar/Calendar.php",
+		"/D/Users/finap/git/cs480/test/phpunit.xml",
+		"/D/Users/finap/git/cs480/vendor/composer/ClassLoader.php",
+		"/D/xampp/php/php.ini",
+		"/D/php/php.ini",
+		"/D/Users/finap/Documents/php-7.0.5-Win32-VC14-x64/install.txt",
+		"/D/Users/finap/git/cs480/test/unit/api/session/SessionTest.php",
+		"/D/Users/finap/git/cs480/vendor/autoload.php",
+		"/D/Users/finap/git/cs480/vendor/composer/autoload_real.php",
+		"/D/Users/finap/git/cs480/vendor/composer/autoload_psr4.php",
+		"/D/Users/finap/git/cs480/test/unit/api/session/SessionSpec.php",
+		"/D/Users/finap/git/cs480/app/api/activity/shared/Recurrence.php",
+		"/D/Users/finap/git/cs480/app/api/activity/shared/ActivityInfo.php",
+		"/D/Users/finap/git/cs480/test/unit/api/ConvertArraySpec.php",
+		"/D/Users/finap/git/cs480/app/api/tasks/task/Task.php",
+		"/D/Users/finap/git/cs480/app/core/app.service.js",
+		"/D/Users/finap/git/cs480/app/modules/access/access.service.js",
+		"/D/Users/finap/git/cs480/app/modules/access/status.service.js",
+		"/D/Users/finap/git/cs480/app/api/managers/loginManager.php",
+		"/D/Users/finap/git/cs480/app/pages/layout/header/header.html",
+		"/D/Users/finap/git/cs480/app/pages/layout/header/header.directive.js",
+		"/D/Users/finap/git/cs480/app/pages/layout/header/header.controller.js",
+		"/D/Users/finap/git/cs480/app/pages/layout/header/header.service.js",
+		"/D/Users/finap/git/cs480/app/pages/register/register.service.js",
+		"/D/Users/finap/git/cs480/app/api/tasks/label/Label.php",
+		"/D/Users/finap/git/cs480/app/api/session/sessionVarManager.php",
+		"/D/xampp/apache/logs/error.log",
+		"/D/Users/finap/git/cs480/app/api/calendars/calendar/Calendar.php",
+		"/D/xampp/mysql/data/mysql_error.log",
+		"/D/Users/finap/git/cs480/app/api/arrayManipulation.php",
+		"/D/Users/finap/git/cs480/test/unit/api/ArrayManipulationSpec.php",
+		"/D/Users/finap/git/cs480/app/modules/tasks/tasks.html",
+		"/D/Users/finap/git/cs480/app/api/tasks/task/taskManager.php",
+		"/D/Users/finap/git/cs480/app/api/task/taskManager.php",
+		"/D/Users/finap/git/cs480/app/modules/logout/logout.controller.js",
+		"/D/Users/finap/git/cs480/app/modules/logout/logout.service.js",
+		"/D/Users/finap/Downloads/sp-app_tmp/app/pages/layout/header/header.service.js",
+		"/D/Users/finap/git/cs480/app/pages/login/login.html",
+		"/D/Users/finap/git/cs480/app/pages/layout/sidebar/sidebar.directive.js",
+		"/D/Users/finap/git/cs480/app/api/session/getSessionVar.php",
+		"/D/Users/finap/git/cs480/app/modules/sidebar/sidebar.directive.js",
+		"/D/Users/finap/git/cs480/app/pages/login/login.controller.js",
+		"/D/Users/finap/git/cs480/app/pages/login/login.service.js",
+		"/D/Users/finap/git/cs480/app/services/user.service.js",
+		"/D/xampp/tmp/sess_murdd6avolf4c18vong73ltcnfaf0h1v",
+		"/D/xampp/tmp/cachegrind.out.1459645421-D__Users_finap_git_cs480_app_api_managers_loginManager_php",
+		"/D/xampp/tmp/ibDFE6.tmp"
+	],
+	"find":
+	{
+		"height": 70.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"getDataFor",
+			"){",
+			"opponentOrder",
+			"opponentCards",
+			"player.length",
+			"player",
+			"removePlayerFromRoom",
+			"removePlayer",
+			"\n		",
+			"i",
+			"exitRoom",
+			"console",
+			"splice",
+			"getCardNumber",
+			"getCardSuit",
+			"b",
+			"a",
+			"numberOfCardsInHand",
+			".name",
+			"splice",
+			"player",
+			"playerIndex",
+			"player",
+			"getUsername",
+			"updateRooms",
+			"getPlayers",
+			"hasRoom",
+			"checkIfPlayerHasRoom",
+			"cardsLeft",
+			"allCards",
+			"deck",
+			"'",
+			"playerExists",
+			"allPlayersReady",
+			"io.emit(\"updateRooms\", playersNotInRoomInRooms);",
+			"io.emit(\"updateRooms\", playersNotInRoomInRooms);\n}",
+			"addPlayerToRoom",
+			"user",
+			"playersNotInRoom",
+			"array",
+			"getIndexOfPlayer",
+			"users",
+			"room[",
+			"rooms",
+			"getIndexOfUser",
+			"deletePlayer",
+			"allAreRady",
+			"rooms",
+			"\"vm.",
+			"\"",
+			"tasksService",
+			"getTasks",
+			"tasksService",
+			"getTasks",
+			"4",
+			"sameDay",
+			"sameDayFilter",
+			"-",
+			"HH",
+			"\"",
+			"day",
+			"))",
+			"isSameDay",
+			"EventsController",
+			"getNextDay",
+			"name",
+			"registerForm",
+			"3",
+			"10",
+			"2",
+			"label_id",
+			"task",
+			".clone()",
+			"moment",
+			"eventsService",
+			"date",
+			"calendar-view",
+			"$",
+			"moment",
+			"default",
+			"sm",
+			"id",
+			"#",
+			"#calendar",
+			"#",
+			"events",
+			"Events",
+			"Event",
+			"tables",
+			"eventService",
+			"labelService",
+			"calendar",
+			"Dialog",
+			"task",
+			"Dialog",
+			"Task",
+			"Label",
+			"label",
+			"calendarService",
+			"calendarDirective",
+			"calendar",
+			"calendarService",
+			"CalendarController",
+			"Task",
+			"eventsService",
+			"task",
+			"Task",
+			"task",
+			"tasks",
+			"calendar",
+			"tasks",
+			"updateTasks",
+			"tasksService",
+			"taskModalService",
+			"TasksController",
+			"tasks",
+			"tasksDirective",
+			"input[type=checkbox]#priority",
+			"br",
+			"<br/>",
+			"col-sm-10",
+			"col-sm-2 ",
+			"modal",
+			"<input",
+			"</label><br/>",
+			"<br/>",
+			"<label>",
+			"input-group"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"getName",
+			"playersNotInRoom",
+			"allAreReady",
+			".calendar",
+			"vm.item",
+			"vm.activity",
+			"vm.task",
+			"joinedActivityWithParent",
+			"getJoinedActivity",
+			"getFullJoinedActivity",
+			"joinedActivity",
+			"$this->calId",
+			"getWhere",
+			"$",
+			"ConvertArray::",
+			"activity_info",
+			"$this->db->",
+			"sp-",
+			"",
+			"selected",
+			"cal_event",
+			"event_meta",
+			"person_id",
+			"person",
+			"REFERENCES $1\\('$2'",
+			"EXISTS '$1'",
+			"EXISTS '$1' \\(",
+			"KEY \\(\\'\\1\\'",
+			"KEY \\(\\'$1\\'",
+			"KEY \\('$1'",
+			"KEY \\('$2'",
+			"KEY \\('$1'\\)",
+			"KEY \\('$0'\\)",
+			"KEY ('$1')",
+			"KEY (\\'*\\')",
+			"KEY ('*')",
+			"'),",
+			"KEY ('",
+			"conn",
+			"$conn",
+			"$.util",
+			"$.",
+			"fileTestPaths",
+			"",
+			"gutil",
+			"plugins.",
+			"plugins",
+			"plugins.",
+			"plugins",
+			"$",
+			"/",
+			"",
+			".scss\";",
+			"/_",
+			"container",
+			"js",
+			"toggleSidebar",
+			"RubiksCube",
+			"vimfiles/",
+			"/c/",
+			"/d/Users/finap",
+			"offset ),",
+			"face, ",
+			"",
+			"getVertex( face+, offset)",
+			"posOrNeg(face+)*$1",
+			"posOrNeg(face+)*",
+			"] + offset",
+			"face",
+			"$1]",
+			"$0]",
+			"\\d]",
+			"vertices[j",
+			"vertices[j]",
+			"j",
+			"",
+			" ",
+			",",
+			"C:",
+			"Metric",
+			"F",
+			"#Imperial#"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5086,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4483,
+								4483
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3561.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "pub/client.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2865,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1325,
+								1325
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 712.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "pub/index.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3863,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2016.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "room.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6375,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4222,
+								4222
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3024.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "player.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1788,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1197,
+								1197
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "/D/Users/finap/Downloads/Durak_v1.0/server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3973,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1187,
+								1187
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1890.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2538,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								2538
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2383.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/client.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2891,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								507,
+								515
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/Users/finap/Downloads/Durak_v1.0/pub/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3924,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Material-Theme-Lighter.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 66.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 156.0
+	},
+	"output.figlet_preview":
+	{
+		"height": 102.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 150.0
+	},
+	"pinned_build_system": "",
+	"project": "cs365-group.sublime-project",
+	"replace":
+	{
+		"height": 114.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\Users\\finap\\Dropbox\\Apps\\Sublime Text 3\\cs365.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 236.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

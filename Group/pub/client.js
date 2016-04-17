@@ -1,101 +1,127 @@
-'use strict';
-
 var socket = io();
-var pieces = [];
-var scores = {};
-var status = '';
-var boardSize = 13;
+var myUsername;
+var myRoomNumber;
+var myState = "waiting";
 
-function main() {
-	socket.emit('getData');
-	socket.on('updateData', updateData);
-	socket.on('setRole', setRole);
-	socket.on('redWon', redWon);
-	socket.on('blackWon', blackWon);
-	socket.on('resetClient', resetClient);
+function doThisWhenLoaded() {
+	showLoginScreen();
 
-	setupClicks();
-
-	// Firefox error fix
-	$(window).on('beforeunload', function(){
-    	socket.close();
+	$("#loginButton").click(function() {
+		socket.emit("login", $("#username").val());
 	});
-}
 
-function getAppend(i, j) {
-	var piece, pieceClass;
-	if (pieces[i][j] === null) {
-		piece = '+';
-		pieceClass = 'none';
-	} else {
-		piece = '&#11044;';
-		pieceClass = pieces[i][j];
-	}
-	return "<td class='" + pieceClass + "'>" + piece + "</td>";
-}
-
-function setRole(role) {
-	$('#role').html("<div class='" + role + "'>" + role + "</div>");
-}
-
-function setupClicks() {
-	$("#reset").click(resetServer);
-	$("#board").on(
-		"click",
-		"td",
-		function() {
-			var row = $(this).closest("tr").index();
-			var col = $(this).index();
-
-			socket.emit('makeMove', {row: row, col: col});
+	$("#readyBtn").click(function() {
+		console.log("readyBtm clicked");
+		console.log(myState);
+		if (myState === "waiting") {
+			myState = "ready";
+			$("#readyBtn").text("not ready");
+		} else {
+			myState = "waiting";
+			$("#readyBtn").text("ready");
 		}
-	);
-}
+		socket.emit("changeState", myState);
+	});
 
-function updateView() {
-	var i, j, piece;
-	var board = "";
+	$("#exitRoomBtn").click(function() {
+		$("#waitDiv").hide();
+		$("#msgRoom").hide();
+		socket.emit("exitRoom", myRoomNumber);
+	});
 
-	$("#status").html(status);
-	$("#score-red").html("Red: " + scores.red);
-	$("#score-black").html("Black: " + scores.black);
+	socket.on("joinedSuccessfully", function(roomNumber) {
+		$("#waitDiv").show();
+		$("#userInRoomText").text("You are in room #" + roomNumber);
+		$("#readyBtn").text("ready");
+	});
 
-	for(var i = 0; i < boardSize; i++) {
-		board += "<tr>";
- 		for (var j = 0; j < boardSize; j++) {
-			board += getAppend(i, j);
+	socket.on("lockRoom", function(roomNumber) {
+		$("#lock"+roomNumber+"room").css("visibility",  "visible");
+		$("#roomDiv .room").eq(roomNumber).find(".joinBtn").prop("disabled",true);
+	});
+
+	socket.on("nameExists", function(name) {
+		$("#nameWarning").text("Choose other name");
+	});
+
+	socket.on("removedSuccessfully", function(roomNumber) {
+		$("#waitDiv").hide();
+	});
+
+	/**
+	* @see Room->getDataForPlayer().
+	*/
+	socket.on("sendData", function(data) {
+		// TODO: Set data appropriately.
+	});
+
+	socket.on("sendMessage", function(msg) {
+		$("#msgRoom").show();
+		$("#msgRoom").text(msg);
+	});
+
+	socket.on("showRooms", function(username) {
+		showRoomScreen();
+	});
+
+	// NOTE: Had two functions of the same name, just with different capitalizations and the server was calling the other one. :) Works fine now.
+	socket.on("startGame", function(usersInRoom) {
+		showMainScreen();
+		for(var k = 0; k < usersInRoom.length; ++k) {
+			$("#p"+k+"name").text(usersInRoom[k]);
 		}
-		board += "</tr>";
+	});
+
+	socket.on("updateRooms", function(usersInRooms) {
+		console.log(usersInRooms);
+		updateRoomsInfo(usersInRooms);
+	});
+
+	for(i = 0; i < 6; ++i) {
+		$("#roomDiv .room").eq(i).find(".joinBtn").click(makeClickHandlerFor(i));
 	}
-
-	$("#board").html(board);
 }
 
-function updateData(data) {
-	status = data.status
-	pieces = data.pieces;
-	scores = data.scores;
-	updateView();
+function updateRoomsInfo(usersInRooms) {
+	var r, p;
+	for(r = 0; r < 6; ++r) {
+		for(p = 0; p < usersInRooms[r].length; ++p) {
+			$("#r" + (r+1) + "p" + (p+1)).text(usersInRooms[r][p]);
+		}
+		while(p < 4) {
+			$("#r" + (r+1) + "p" + (p+1)).text("...");
+			++p
+		}
+	}
 }
 
-function resetClient() {
-	$('.overlay').removeClass('is-visible');
-	$('#red-won').removeClass('is-visible');
-	$('#black-won').removeClass('is-visible');
+function makeClickHandlerFor(roomNumber) {
+	return function() {
+		socket.emit("join", roomNumber);
+	}
 }
 
-function resetServer() {
-	socket.emit("reset");
+function showLoginScreen() {
+	$("#nameWarning").text("");
+	$("#loginDiv").show();
+	$("#waitDiv").hide();
+	$("#mainDiv").hide();
+	$("#roomDiv").hide();
 }
 
-function redWon() {
-	$('.overlay').addClass('is-visible');
-	$('#red-won').addClass('is-visible');
+function showRoomScreen() {
+	$("#nameWarning").text("");
+	$("#loginDiv").hide();
+	$("#mainDiv").hide();
+	$("#roomDiv").show();
+	$("#waitDiv").hide();
 }
 
-function blackWon() {
-	$('.overlay').addClass('is-visible');
-	$('#black-won').addClass('is-visible');
+function showMainScreen() {
+	$("#loginDiv").hide();
+	$("#waitDiv").hide();
+	$("#roomDiv").hide();
+	$("#mainDiv").show();
 }
 
-$(main);
+$(doThisWhenLoaded);

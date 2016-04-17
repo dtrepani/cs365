@@ -3,6 +3,8 @@ module.exports = {
 	Card: Card
 };
 
+// NOTE: Dropped orientation. Would have been different for every player's screen.
+
 /**
 * @param {string} aSuit Suit of card: hearts, spades,
 *						diamonds, or clubs.
@@ -12,21 +14,20 @@ module.exports = {
 function Card(aSuit, aNumber) {
 	this.suit = aSuit;
 	this.number = aNumber;
-	this.orientation = "vertical";
 }
 
 Card.prototype = {
-	getCardSuit: getCardSuit,
-	getCardNumber: getCardNumber,
+	getSuit: getSuit,
+	getNumber: getNumber,
 	getOrientation: getOrientation,
 	setOrientation: setOrientation
 };
 
-function getCardSuit() {
+function getSuit() {
 	return this.suit;
 }
 
-function getCardNumber() {
+function getNumber() {
 	return this.number;
 }
 

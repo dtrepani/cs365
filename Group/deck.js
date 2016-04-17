@@ -7,12 +7,11 @@ module.exports = {
 };
 
 function Deck(aNumberOfCards) {
-	this.cards = new Array(aNumberOfCards);
 	if (aNumberOfCards > 0) {
-		generateAllCards();
-		this.shuffle();
+		this.generateAllCards();
+		this.shuffle(aNumberOfCards);
+		this.trump = this.cards.pop();
 	}
-	this.trump = this.cards.pop();
 }
 
 Deck.prototype = {
@@ -32,7 +31,7 @@ function generateAllCards() {
 	var suits = ["hearts", "diamonds", "spades", "clubs"];
 	this.allCards = [];
 
-	for (var i = 0; i < 4;) {
+	for (var i = 0; i < 4; i++) {
 		for (var j = 1; j <= 13; j++) {
 			this.allCards.push(new card.Card(suits[i], j));
 		}
@@ -47,11 +46,11 @@ function getTrump() {
 	return this.trump;
 }
 
-function shuffle() {
-	for (var i = 0; i < this.cards.length; i++) {
-		var randCard = Math.random() * 52;
-		this.deck.push(this.allCards[randCard]);
-		this.allCards.splice(randCard, 1);
+function shuffle(numberOfCards) {
+	this.cards = [];
+	for (var i = 0; i < numberOfCards; i++) {
+		var randCard = Math.random() * this.allCards.length;
+		this.cards.push(this.allCards.splice(randCard, 1)[0]);
 	}
 }
 
