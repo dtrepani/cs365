@@ -91,6 +91,29 @@ io.on("connection", function(socket) {
 		removePlayerFromRoom(roomNumber, socket);
 		updateRooms();
 	});
+
+	socket.on("discard", discard);
+	socket.on("playCard", playCard);
+	socket.on("takeCards", takeCards);
+
+	function discard(roomNumber) {
+		rooms[roomNumber].discard(socket);
+		sendDataToRoom(roomNumber);
+	}
+
+	/**
+	* @param {int} roomNumber
+	* @see Room->playCard().
+	*/
+	function playCard(roomNumber, cardIndex, slotIndex) {
+		rooms[roomNumber].playCard(socket, cardIndex, slotIndex);
+		sendDataToRoom(roomNumber);
+	}
+
+	function takeCards(roomNumber) {
+		rooms[roomNumber].playerTakeCards(socket);
+		sendDataToRoom(roomNumber);
+	}
 });
 
 /**

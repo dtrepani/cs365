@@ -16,6 +16,7 @@ function Player(aUsername, aSocket) {
 }
 
 Player.prototype = {
+	getCard: getCard,
 	getCards: getCards,
 	getLowestTrump: getLowestTrump,
 	getSocket: getSocket,
@@ -28,8 +29,13 @@ Player.prototype = {
 	playCard: playCard,
 	setSocket: setSocket,
 	setState: setState,
-	setUsername: setUsername
+	setUsername: setUsername,
+	takeCards: takeCards
 };
+
+function getCard(cardIndex) {
+	return this.cards[cardIndex];
+}
 
 function getCards() {
 	return this.cards;
@@ -79,8 +85,11 @@ function numberOfCards() {
 	return this.cards.length;
 }
 
-function playCard() {
-
+/**
+* @return {Card Object}
+*/
+function playCard(cardIndex) {
+	return this.cards.splice(cardIndex, 1)[0];
 }
 
 function setSocket(aSocket) {
@@ -97,4 +106,10 @@ function setState(aState) {
 
 function setUsername(aUsername) {
 	this.username = aUsername;
+}
+
+function takeCards(aCards) {
+	while (aCards.length !== 0) {
+		this.cards.push(aCards.pop());
+	}
 }

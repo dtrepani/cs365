@@ -26,6 +26,7 @@ function doThisWhenLoaded() {
 	$("#exitRoomBtn").click(function() {
 		$("#waitDiv").hide();
 		$("#msgRoom").hide();
+		console.log(myRoomNumber);
 		socket.emit("exitRoom", myRoomNumber);
 	});
 
@@ -33,6 +34,7 @@ function doThisWhenLoaded() {
 		$("#waitDiv").show();
 		$("#userInRoomText").text("You are in room #" + roomNumber);
 		$("#readyBtn").text("ready");
+		myRoomNumber = roomNumber;
 	});
 
 	socket.on("lockRoom", function(roomNumber) {

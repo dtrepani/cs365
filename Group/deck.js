@@ -16,6 +16,7 @@ function Deck(aNumberOfCards) {
 
 Deck.prototype = {
 	addCard: addCard,
+	addCards: addCards,
 	generateAllCards: generateAllCards,
 	getNumOfCards: getNumOfCards,
 	getTrump: getTrump,
@@ -27,12 +28,18 @@ function addCard(aCard) {
 	this.cards.push(aCard);
 }
 
+function addCards(aCards) {
+	while (aCards !== 0) {
+		this.cards.push(aCards.pop());
+	}
+}
+
 function generateAllCards() {
 	var suits = ["hearts", "diamonds", "spades", "clubs"];
 	this.allCards = [];
 
 	for (var i = 0; i < 4; i++) {
-		for (var j = 1; j <= 13; j++) {
+		for (var j = 6; j <= 13; j++) {
 			this.allCards.push(new card.Card(suits[i], j));
 		}
 	}
