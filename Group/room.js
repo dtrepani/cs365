@@ -15,8 +15,10 @@ function Room(name) {
 	this.discardDeck;
 	this.state = "waiting";
 	this.currentTurn = "attacking"; // See playerStateCycle
-	this.attackCardsPlayedForRound = 0;
-	this.cardsInPlay = []; // Max 6x2 array for the cards in play.
+	this.cardsInPlay = {
+		"attacking": [],
+		"defending": []
+	};
 
 	/**
 	* @var {Player Object[]}	Players get removed from the game as
@@ -48,11 +50,6 @@ function Room(name) {
 	];
 }
 
-// TODO:
-// checkIfCanPlayCard(ind, roomNumber) on =>
-// make index card slot automatic
-// playCard emit => send slotNumber of where card played
-
 Room.prototype = {
 	// Room setup
 	addPlayer: addPlayer,
@@ -79,140 +76,19 @@ Room.prototype = {
 	getPlayerInGameIndexForState: getPlayerInGameIndexForState,
 
 	// Game actions
+	canPlayCard: canPlayCard,
 	checkIfGameIsDone: checkIfGameIsDone,
 	checkIfPlayerCanBeRemovedFromGame: checkIfPlayerCanBeRemovedFromGame,
 	cyclePlayerStates: cyclePlayerStates,
 	dealCards: dealCards,
 	discard: discard,
 	isValidMove: isValidMove,
+	makeMove: makeMove,
 	nextTurn: nextTurn,
 	playCard: playCard,
 	playerTakeCards: playerTakeCards,
 	takeCardsInPlay: takeCardsInPlay
 };
-
-function checkIfGameIsDone() {
-	return (this.playersInGame.length === 1);
-}
-
-function checkIfPlayerCanBeRemovedFromGame(user) {
-	if (this.deck.numberOfCards() === 0 && user.numberOfCards() === 0) {
-		user.setState("waiting");
-		this.playersInGame.splice(this.playersInGame.indexOf(user), 1);
-		return true;
-	}
-	return false;
-}
-
-function discard(socket) {
-	var user = getPlayerWithSocket(socket);
-	if (user.getState() === this.currentTurn) {
-		this.discardDeck.addCards(this.takeCardsInPlay());
-		this.nextTurn(false);
-		this.checkIfPlayerCanBeRemovedFromGame(user);
-	}
-}
-
-function getPlayerInGameIndexForState(state) {
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		if (this.playersInGame[i].getState() === state) {
-			return i;
-		}
-	}
-}
-
-function isValidMove(card, slotIndex) {
-	var cardsInSlot = this.cardsInPlay[slotIndex];
-	var topCardInSlot = getTopCardInSlot(slotIndex);
-
-	switch (this.currentTurn) {
-		case "supporting":
-		case "attacking":
-			return (cardsInSlot.length === 0 || cardValidSuitAndGreaterThanSlotCard());
-		case "defending":
-			return isValidMoveForDefender();
-		default:
-			return false;
-	}
-
-	function getTopCardInSlot(index) {
-		var topCard = this.cardsInPlay[index].pop();
-		this.cardsInPlay[index].push(topCard);
-		return topCard;
-	}
-
-	function isSameValueAsTopmostCardInAnotherSlot() {
-		for (var i = 0; i < this.cardsInPlay.length; i++) {
-			if (getTopCardInSlot(i).getNumber() === card.getNumber()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	function isValidMoveForAttacker() {
-		if (cardsInSlot.length === 0 || isSameValueAsTopmostCardInAnotherSlot()) {
-			return true;
-		}
-		return cardValidSuitAndGreaterThanSlotCard();
-	}
-
-	function isValidMoveForDefender() {
-		if (cardsInSlot.length === 0) {
-			return false;
-		}
-		return cardValidSuitAndGreaterThanSlotCard();
-	}
-
-	function cardValidSuitAndGreaterThanSlotCard() {
-		var isTrumpSuit = (card.getSuit() === this.deck.getTrump().getSuit());
-		var isSameSuit = (card.getSuit() === cardsInSlot[topCardInSlot].getSuit());
-		var beatsCardInSlot = card.getNumber() > cardsInSlot[topCardInSlot].getNumber();
-
-		return ((isTrumpSuit && isSameSuit && beatsCardInSlot) ||
-			(beatsCardInSlot && (isTrumpSuit || isSameSuit)));
-	}
-}
-
-// TODO
-// index, roomNumber, slotNumber
-// checkIfCanPlayCard
-// index, roomNumber
-// emit back ifCanPlayCard
-	// return bool
-
-/**
-* @param {Socket Object} socket
-* @param {int} cardIndex Index of card that player is playing.
-* @param {int} slotIndex Index of slot that card is being placed on.
-*/
-function playCard(socket, cardIndex, slotIndex) {
-	var user = getPlayerWithSocket(socket);
-	if (user.getState() === this.currentTurn &&
-		this.isValidMove(user.getCard(cardIndex), slotIndex)
-	) {
-		var state = user.getState();
-		this.cardsInPlay[slotIndex].push(user.playCard(cardIndex));
-		if (state === "attacking" ||
-			state === "supporting") {
-			this.attackCardsPlayedForRound++;
-			this.nextTurn(false);
-		} else if (state === "defending") {
-			this.nextTurn(false);
-		}
-	}
-}
-
-function playerTakeCards(socket) {
-	var user = getPlayerWithSocket(socket);
-	if (user.getState() === this.currentTurn) {
-		user.takeCards(this.takeCardsInPlay());
-		this.nextTurn((user.getState() === "defending"));
-	}
-}
-///////////////////////////
-
-
 
 /**
 * @param  {Player Object}	player	Note that this is not a socket, but the
@@ -228,13 +104,42 @@ function addPlayer(player) {
 	return false;
 }
 
+function canPlayCard(socket, cardIndex) {
+	var user = getPlayerWithSocket(socket);
+	var cardsInPlayType = (this.currentTurn === "defending") ? this.cardsInPlay.defending : this.cardsInPlay.attacking;
+
+	for (var i = 0; i < cardsInPlayType.length; i++) {
+		if (this.isValidMove(user.getCard(canPlayCard)), i) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function checkIfGameIsDone() {
+	if (this.playersInGame.length === 1) {
+		this.state = "waiting";
+		this.playersInGame[0].setState("waiting");
+		return true;
+	}
+	return false;
+}
+
+function checkIfPlayerCanBeRemovedFromGame(user) {
+	if (this.deck.numberOfCards() === 0 && user.numberOfCards() === 0) {
+		user.setState("waiting");
+		this.playersInGame.splice(this.playersInGame.indexOf(user), 1);
+		return true;
+	}
+	return false;
+}
+
 /**
 * Called on round end. Cycles player states for the
 * next round and deals the cards for that round.
 */
 function cyclePlayerStates() {
 	var cycle = this.playerStateCycle[this.playersInGame.length - 2];
-	this.attackCardsPlayedForRound = 0;
 
 	for (var i = 0; i < this.playersInGame.length; i++) {
 		var user = this.playersInGame[i];
@@ -296,11 +201,25 @@ function determineAttackOrder() {
 	}
 }
 
+function discard(socket) {
+	var user = getPlayerWithSocket(socket);
+	if (user.getState() === this.currentTurn) {
+		this.discardDeck.addCards(this.takeCardsInPlay());
+		this.nextTurn(false);
+		this.checkIfPlayerCanBeRemovedFromGame(user);
+	}
+}
+
 function takeCardsInPlay() {
 	var cards = [];
-	for (var i = 0; i < this.cardsInPlay.length; i++) {
-		while (this.cardsInPlay[i].length !== 0) {
-			cards.push(this.cardsInPlay[i].pop());
+	for (var i = 0; i < this.cardsInPlay.attacking.length; i++) {
+		while (this.cardsInPlay.attacking[i].length !== 0) {
+			cards.push(this.cardsInPlay.attacking[i].pop());
+		}
+	}
+	for (var i = 0; i < this.cardsInPlay.defending.length; i++) {
+		while (this.cardsInPlay.defending[i].length !== 0) {
+			cards.push(this.cardsInPlay.defending[i].pop());
 		}
 	}
 	return cards;
@@ -309,15 +228,19 @@ function takeCardsInPlay() {
 /**
 * Get data to send to the player about the game.
 *
-* @return {mixed[]} Data in the form of {cards, state, cardsInPlay[][], opponentData = {opponent, name, numberOfCards}}.
+* @return {mixed[]} Data in the form of {cards, state, cardsInPlay{attacking, defending}, opponentData = {opponent, name, numberOfCards}}.
 */
 function getDataForPlayer(socket) {
 	var data = {};
 	var playerIndex = 0;
 
+	data.cardsInPlay = this.cardsInPlay;
+	data.trump = this.deck.getTrump();
+
 	for (var i = 0; i < this.players.length; i++) {
 		var user = this.players[i];
 		if (user.isSocket(socket)) {
+			data.myUsername = user.getName();
 			data.cards = user.getCards();
 			data.state = user.getState();
 			data.isTurn = (user.getState() === this.currentTurn);
@@ -363,13 +286,12 @@ function getName() {
 	return this.name;
 }
 
-function getPlayerWithSocket(socket) {
-	for (var i = 0; i < this.players.length; i++) {
-		if (this.players[i].isSocket(socket)) {
-			return this.players[i];
+function getPlayerInGameIndexForState(state) {
+	for (var i = 0; i < this.playersInGame.length; i++) {
+		if (this.playersInGame[i].getState() === state) {
+			return i;
 		}
 	}
-	return false;
 }
 
 /**
@@ -399,6 +321,15 @@ function getPlayerSockets() {
 	return sockets;
 }
 
+function getPlayerWithSocket(socket) {
+	for (var i = 0; i < this.players.length; i++) {
+		if (this.players[i].isSocket(socket)) {
+			return this.players[i];
+		}
+	}
+	return false;
+}
+
 function getState() {
 	return this.state;
 }
@@ -414,6 +345,79 @@ function isFull() {
 	return (this.players.length > 3);
 }
 
+function isValidMove(card, slotIndex) {
+	switch (this.currentTurn) {
+		case "supporting":
+		case "attacking":
+			return isValidMoveForAttacker();
+		case "defending":
+			return isValidMoveForDefender();
+		default:
+			return false;
+	}
+
+	/**
+	* @param {cardsInPlay.attacking || cardsInPlay.defending} Which cardsInPlay to get the topmost card of.
+	* @param {int} index Slot index.
+	*/
+	function getTopCardInSlot(cardsInPlayType, index) {
+		var topCard = cardsInPlayType[index].pop();
+		cardsInPlayType[index].push(topCard);
+		return topCard;
+	}
+
+	function isSameValueAsTopmostCardInAnotherSlot() {
+		for (var i = 0; i < this.cardsInPlay.attacking[slotIndex].length; i++) {
+			if (getTopCardInSlot(this.cardsInPlay.attacking, i).getNumber() === card.getNumber()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function isValidMoveForAttacker() {
+		if (this.cardsInPlay.attacking[slotIndex].length === 0 || isSameValueAsTopmostCardInAnotherSlot()) {
+			return true;
+		}
+		return cardValidSuitAndGreaterThanSlotCard();
+	}
+
+	function isValidMoveForDefender() {
+		if (cardsInSlot.length === 0) {
+			return false;
+		}
+		return cardValidSuitAndGreaterThanSlotCard();
+	}
+
+	/**
+	* Checked against the opposing (for defending, check attacking and vice versa) cards in play.
+	*/
+	function cardValidSuitAndGreaterThanSlotCard() {
+		var opposingCardsInPlay = (this.currentTurn === "defending") ? this.cardsInPlay.attacking : this.cardsInPlay.defending;
+		var topCardInSlot = getTopCardInSlot(opposingCardsInPlay, slotIndex);
+
+		var isTrumpSuit = (card.getSuit() === this.deck.getTrump().getSuit());
+		var isSameSuit = (card.getSuit() === opposingCardsInPlay[topCardInSlot].getSuit());
+		var beatsCardInSlot = card.getNumber() > opposingCardsInPlay[topCardInSlot].getNumber();
+
+		return ((isTrumpSuit && isSameSuit && beatsCardInSlot) ||
+			(beatsCardInSlot && (isTrumpSuit || isSameSuit)));
+	}
+}
+
+function makeMove(user) {
+	if (user.getState() === this.currentTurn) {
+		for (var i = 0; i < this.cardsInPlay.length; i++) {
+			if (isValidMove(card, i)) {
+				var cardsInPlayType = (this.currentTurn === "defending") ? this.cardsInPlay.defending : this.cardsInPlay.attacking;
+				cardsInPlayType[slotIndex].push(user.playCard(cardIndex));
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 /**
 * Cycle to the next player's turn.
 *
@@ -421,8 +425,6 @@ function isFull() {
 * of an play cycle or no more cards can be played.
 * If the next turn is "waiting" or the defending player took
 * the cards, the turn is skipped.
-* If no more cards can be played, automatically discard the cards
-* in play and go to next round.
 *
 * @param {bool} forfeit Whether or not the last player took the cards and was defending.
 */
@@ -435,14 +437,7 @@ function nextTurn(forfeit) {
 		nextTurnIndex = (nextTurnIndex + 1) % cycle.length;
 	}
 
-	if (turnIndex === cycle.length) {
-		this.cyclePlayerStates();
-	}
-
-	if (noMoreCardsCanBePlayed()) {
-		if (this.cardsInPlay[0].length !== 0) { // Cards have not been discarded.
-			this.discardDeck.addCards(this.takeCardsInPlay());
-		}
+	if (turnIndex === cycle.length || noMoreCardsCanBePlayed()) {
 		this.cyclePlayerStates();
 	}
 
@@ -456,8 +451,26 @@ function nextTurn(forfeit) {
 	function noMoreCardsCanBePlayed() {
 		return (
 			(cycle[turnIndex] === "defending") &&
-			(this.playersInGame[this.getPlayerInGameIndexForState("defending")].numberOfCards() === 0 || this.attackCardsPlayedForRound >= 6)
+			(this.playersInGame[this.getPlayerInGameIndexForState("defending")].numberOfCards() === 0)
 		);
+	}
+}
+
+/**
+* @param {Socket Object} socket
+* @param {int} cardIndex Index of card that player is playing.
+* @param {int} slotIndex Index of slot that card is being placed on.
+*/
+function playCard(socket, cardIndex, slotIndex) {
+	var user = getPlayerWithSocket(socket);
+	if (this.makeMove(user)) {
+		var state = user.getState();
+		if (state === "attacking" ||
+			state === "supporting") {
+			this.nextTurn(false);
+		} else if (state === "defending") {
+			this.nextTurn(false);
+		}
 	}
 }
 
@@ -468,6 +481,14 @@ function playerIsInRoom(socket) {
 		}
 	}
 	return false;
+}
+
+function playerTakeCards(socket) {
+	var user = getPlayerWithSocket(socket);
+	if (user.getState() === this.currentTurn) {
+		user.takeCards(this.takeCardsInPlay());
+		this.nextTurn((user.getState() === "defending"));
+	}
 }
 
 /**
@@ -518,7 +539,6 @@ function startGame() {
 	this.deck = new deck.Deck(36);
 	this.discardDeck = new deck.Deck(0);
 	this.state = "playing";
-	this.attackCardsPlayedForRound = 0;
 	this.playersInGame = this.players;
 
 	this.determineAttackOrder();
