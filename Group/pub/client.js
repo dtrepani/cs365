@@ -100,7 +100,7 @@ function updateRoomsInfo(usersInRooms) {
 function makeClickHandlerFor(roomNumber) {
 	return function() {
 		socket.emit("join", roomNumber);
-	}
+	};
 }
 
 function showLoginScreen() {

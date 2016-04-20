@@ -18,7 +18,7 @@ Deck.prototype = {
 	addCard: addCard,
 	addCards: addCards,
 	generateAllCards: generateAllCards,
-	getNumOfCards: getNumOfCards,
+	numberOfCards: numberOfCards,
 	getTrump: getTrump,
 	shuffle: shuffle,
 	removeCard: removeCard
@@ -39,13 +39,13 @@ function generateAllCards() {
 	this.allCards = [];
 
 	for (var i = 0; i < 4; i++) {
-		for (var j = 6; j <= 13; j++) {
+		for (var j = 6; j <= 14; j++) {
 			this.allCards.push(new card.Card(suits[i], j));
 		}
 	}
 }
 
-function getNumOfCards() {
+function numberOfCards() {
 	return this.cards.length;
 }
 

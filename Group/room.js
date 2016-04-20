@@ -87,7 +87,7 @@ function discard(socket) {
 
 function getPlayerIndexForState(state) {
 	for (var i = 0; i < this.players.length; i++) {
-		if (user.getState() === state) {
+		if (this.players[i].getState() === state) {
 			return i;
 		}
 	}
@@ -103,7 +103,7 @@ function isValidMove(card, slotIndex) {
 			return (cardsInSlot.length === 0 || cardValidSuitAndGreaterThanSlotCard());
 		case "defending":
 			return isValidMoveForDefender();
-		case default:
+		default:
 			return false;
 	}
 
@@ -132,13 +132,13 @@ function isValidMove(card, slotIndex) {
 		* if only have one empty slot and slot length is 0, return true
 		*/
 		var firstEmptySlotIndex = getFirstEmptySlotIndex();
-		if (cardsInSlot.length === 0) {
-			return true;
-		else if (/* */) {
-			// check that card matches the same value in a topmost card slot
-		} else {
-			return cardValidSuitAndGreaterThanSlotCard();
-		}
+		// if (cardsInSlot.length === 0) {
+		// 	return true;
+		// else if (/* */) {
+		// 	// check that card matches the same value in a topmost card slot
+		// } else {
+		// 	return cardValidSuitAndGreaterThanSlotCard();
+		// }
 	}
 
 	function isValidMoveForDefender() {
@@ -232,7 +232,7 @@ function dealCards() {
 
 	for (var i = attackerIndex; i < this.players.length; i++) {
 		var modIndex = i % this.players.length;
-		while (6 - this.players[modIndex].numberOfCards > 0 && this.deck.getNumOfCards() > 0) {
+		while (6 - this.players[modIndex].numberOfCards() > 0 && this.deck.numberOfCards() > 0) {
 			this.players[modIndex].giveCard(this.deck.removeCard());
 		}
 	}
@@ -416,7 +416,7 @@ function nextTurn() {
 	function noMoreCardsCanBePlayed() {
 		return (
 			(cycle[turnIndex] === "defending") &&
-			(this.players[this.getPlayerIndexForState("defending")].getNumOfCards() === 0 || this.attackCardsPlayedForRound >= 6)
+			(this.players[this.getPlayerIndexForState("defending")].numberOfCards() === 0 || this.attackCardsPlayedForRound >= 6)
 		);
 	}
 }
@@ -480,8 +480,8 @@ function startGame() {
 	this.state = "playing";
 	this.attackCardsPlayedForRound = 0;
 
-	this.dealCards();
 	this.determineAttackOrder();
+	this.dealCards();
 
 	// TODO:
 	//	PLAY GAME! :))

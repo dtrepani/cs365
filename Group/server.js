@@ -143,6 +143,7 @@ function removePlayerFromRoom(roomNumber, socket) {
 }
 
 function addPlayerToRoom(roomNumber, socket) {
+	console.log(roomNumber);
 	var user = playersNotInRoom.splice(getIndexOfPlayer(socket, playersNotInRoom), 1)[0];
 	rooms[roomNumber].addPlayer(user);
 
