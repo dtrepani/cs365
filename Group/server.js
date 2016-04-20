@@ -1,5 +1,9 @@
 var express = require("express");
 var app = express();
+
+var mongoClient = require("mongodb").MongoClient;
+var ObjectID = require("mongodb").ObjectID;
+
 var http = require("http");
 var server = http.Server(app);
 var socketio = require("socket.io");
@@ -14,11 +18,10 @@ var rooms = [];
 var allPlayers = [];
 var playersNotInRoom = [];
 var playersInRoom = []; // Cache variable. Do not set directly.
-
+var db;
 
 //TODO: if during the game one player disconnects,
 //returns to a roomscreen with message ("player dissconected");
-
 
 io.on("connection", function(socket) {
 	console.log("Somebody connected :)");
@@ -99,10 +102,10 @@ io.on("connection", function(socket) {
 	function discard(roomNumber) {
 		rooms[roomNumber].discard(socket);
 		sendDataToRoom(roomNumber);
+		checkIfGameIsDone();
 	}
 
 	/**
-	* @param {int} roomNumber
 	* @see Room->playCard().
 	*/
 	function playCard(roomNumber, cardIndex, slotIndex) {
@@ -115,6 +118,16 @@ io.on("connection", function(socket) {
 		sendDataToRoom(roomNumber);
 	}
 });
+
+function checkIfGameIsDone(roomNumber) {
+	if (rooms[roomNumber].checkIfGameIsDone()) {
+		io.in(rooms[roomNumber].getName()).emit("gameDone");
+
+		var users = rooms[roomNumber].getPlayerObjects();
+		// add +1 to all player usernames games played
+		// add +1 to losing player (only one with not 0 cards) gameslost
+	}
+}
 
 /**
 * If the player doesn't exist in playersNotInRoom[], they're in a room.
@@ -220,7 +233,72 @@ function updateRooms() {
 	io.emit("updateRooms", playersInRooms);
 }
 
-server.listen(8028, function() {
-	initRooms();
-	console.log("Server is listening on port 8028");
+// Database Methods
+/**
+* @param {string} username,
+* @param {int} 0 if game was not lost by player, 1 if game was.
+*/
+function addPlayer(db, username, gameLost, callback) {
+	var collection = db.collection("users");
+	collection.insertOne({
+		name: username,
+		gamesPlayed
+	}, insertResult);
+
+	function insertResult(err, result) {
+		if (err != null) {
+			console.log("Error on insert: " + err);
+			callback(null);
+		} else {
+			callback(result);
+		}
+	}
+}
+
+/**
+* @param {string} username,
+* @param {int} 0 if game was not lost by player, 1 if game was.
+*/
+function updatePlayer(db, username, gameLost, callback) {
+	var collection = db.collection("users");
+	collection.update(
+		{name: username},
+		{$inc: {gamesPlayed: 1, gamesLost: gameLost}},
+		updateResult
+	);
+
+	function updateResult(err, result) {
+		if (err != null) {
+			console.log("Error on update: " + err);
+			callback(null);
+		} else {
+			callback(result);
+		}
+	}
+}
+
+function getPlayerStats(db, callback) {
+	var collection = db.collection("users");
+	collection.find({}).toArray(findResult);
+
+	function updateResult(err, result) {
+		if (err != null) {
+			console.log("Error on find: " + err);
+			callback(null);
+		} else {
+			callback(result);
+		}
+	}
+}
+
+mongoClient.connect("mongodb://localhost:8037/", function(err, database) {
+	if (err) throw err;
+	db = database;
+	console.log("Connected to Mongo.");
+
+	server.listen(8028, function() {
+		initRooms();
+		console.log("Server is listening on port 8028");
+	});
 });
+

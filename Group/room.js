@@ -19,7 +19,14 @@ function Room(name) {
 	this.cardsInPlay = []; // Max 6x2 array for the cards in play.
 
 	/**
-	* @var {string[]}	Use (this.players.length - 2) to
+	* @var {Player Object[]}	Players get removed from the game as
+	* they empty their hand once the deck is depleted, but they're still
+	* in the room itself.
+	*/
+	this.playersInGame = [];
+
+	/**
+	* @var {string[]}	Use (this.playersInGame.length - 2) to
 	* 	get appropriate state cycle to use for the number
 	*	of players in game. Corresponds to players[] and
 	*	their position.
@@ -41,6 +48,11 @@ function Room(name) {
 	];
 }
 
+// TODO:
+// checkIfCanPlayCard(ind, roomNumber) on =>
+// make index card slot automatic
+// playCard emit => send slotNumber of where card played
+
 Room.prototype = {
 	// Room setup
 	addPlayer: addPlayer,
@@ -48,6 +60,7 @@ Room.prototype = {
 	getName: getName,
 	getPlayerWithSocket: getPlayerWithSocket,
 	getPlayers: getPlayers,
+	getPlayerObjects: getPlayerObjects,
 	getPlayerSockets: getPlayerSockets,
 	getState: getState,
 	isFull: isFull,
@@ -63,9 +76,11 @@ Room.prototype = {
 	// Game data
 	getDataForPlayer: getDataForPlayer,
 	getDataForOpponents: getDataForOpponents,
-	getPlayerIndexForState: getPlayerIndexForState,
+	getPlayerInGameIndexForState: getPlayerInGameIndexForState,
 
 	// Game actions
+	checkIfGameIsDone: checkIfGameIsDone,
+	checkIfPlayerCanBeRemovedFromGame: checkIfPlayerCanBeRemovedFromGame,
 	cyclePlayerStates: cyclePlayerStates,
 	dealCards: dealCards,
 	discard: discard,
@@ -76,18 +91,31 @@ Room.prototype = {
 	takeCardsInPlay: takeCardsInPlay
 };
 
-// TODO: move methods to appropriate spot
+function checkIfGameIsDone() {
+	return (this.playersInGame.length === 1);
+}
+
+function checkIfPlayerCanBeRemovedFromGame(user) {
+	if (this.deck.numberOfCards() === 0 && user.numberOfCards() === 0) {
+		user.setState("waiting");
+		this.playersInGame.splice(this.playersInGame.indexOf(user), 1);
+		return true;
+	}
+	return false;
+}
+
 function discard(socket) {
 	var user = getPlayerWithSocket(socket);
 	if (user.getState() === this.currentTurn) {
 		this.discardDeck.addCards(this.takeCardsInPlay());
-		this.nextTurn();
+		this.nextTurn(false);
+		this.checkIfPlayerCanBeRemovedFromGame(user);
 	}
 }
 
-function getPlayerIndexForState(state) {
-	for (var i = 0; i < this.players.length; i++) {
-		if (this.players[i].getState() === state) {
+function getPlayerInGameIndexForState(state) {
+	for (var i = 0; i < this.playersInGame.length; i++) {
+		if (this.playersInGame[i].getState() === state) {
 			return i;
 		}
 	}
@@ -107,45 +135,32 @@ function isValidMove(card, slotIndex) {
 			return false;
 	}
 
-	// Cards playing during one bout cannot exceed six OR the number of cards in defender's hands
-
-	function getFirstEmptySlotIndex() {
-		for (var i = 0; i < this.cardsInPlay.length; i++) {
-			if (this.cardsInPlay[i].length === 0) {
-				return i;
-			}
-		}
-		return false;
-	}
-
 	function getTopCardInSlot(index) {
 		var topCard = this.cardsInPlay[index].pop();
 		this.cardsInPlay[index].push(topCard);
 		return topCard;
 	}
 
+	function isSameValueAsTopmostCardInAnotherSlot() {
+		for (var i = 0; i < this.cardsInPlay.length; i++) {
+			if (getTopCardInSlot(i).getNumber() === card.getNumber()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	function isValidMoveForAttacker() {
-		// attacker can only start new pile if have card of same value as one of the piles topmost cards
-		/**
-		* get first empty slot that's not 0
-		*	return if card is same value as topmost card of previous slot
-		* if only have one empty slot and slot length is 0, return true
-		*/
-		var firstEmptySlotIndex = getFirstEmptySlotIndex();
-		// if (cardsInSlot.length === 0) {
-		// 	return true;
-		// else if (/* */) {
-		// 	// check that card matches the same value in a topmost card slot
-		// } else {
-		// 	return cardValidSuitAndGreaterThanSlotCard();
-		// }
+		if (cardsInSlot.length === 0 || isSameValueAsTopmostCardInAnotherSlot()) {
+			return true;
+		}
+		return cardValidSuitAndGreaterThanSlotCard();
 	}
 
 	function isValidMoveForDefender() {
 		if (cardsInSlot.length === 0) {
 			return false;
 		}
-		// if cardNumber === cardSlotNum, give to next player to defend?
 		return cardValidSuitAndGreaterThanSlotCard();
 	}
 
@@ -158,6 +173,13 @@ function isValidMove(card, slotIndex) {
 			(beatsCardInSlot && (isTrumpSuit || isSameSuit)));
 	}
 }
+
+// TODO
+// index, roomNumber, slotNumber
+// checkIfCanPlayCard
+// index, roomNumber
+// emit back ifCanPlayCard
+	// return bool
 
 /**
 * @param {Socket Object} socket
@@ -174,10 +196,9 @@ function playCard(socket, cardIndex, slotIndex) {
 		if (state === "attacking" ||
 			state === "supporting") {
 			this.attackCardsPlayedForRound++;
-			this.nextTurn();
+			this.nextTurn(false);
 		} else if (state === "defending") {
-			// TODO: if has defended against all moves
-			this.nextTurn();
+			this.nextTurn(false);
 		}
 	}
 }
@@ -186,9 +207,7 @@ function playerTakeCards(socket) {
 	var user = getPlayerWithSocket(socket);
 	if (user.getState() === this.currentTurn) {
 		user.takeCards(this.takeCardsInPlay());
-
-		// if player was defending, forfeit turn
-		this.nextTurn();
+		this.nextTurn((user.getState() === "defending"));
 	}
 }
 ///////////////////////////
@@ -214,11 +233,11 @@ function addPlayer(player) {
 * next round and deals the cards for that round.
 */
 function cyclePlayerStates() {
-	var cycle = this.playerStateCycle[this.players.length - 2];
+	var cycle = this.playerStateCycle[this.playersInGame.length - 2];
 	this.attackCardsPlayedForRound = 0;
 
-	for (var i = 0; i < this.players.length; i++) {
-		var user = this.players[i];
+	for (var i = 0; i < this.playersInGame.length; i++) {
+		var user = this.playersInGame[i];
 		var stateIndex = cycle.indexOf(user.getState());
 		user.setState(cycle[(stateIndex + 1) % cycle.length]);
 	}
@@ -228,12 +247,12 @@ function cyclePlayerStates() {
 
 // TODO: Deals according to playerStateCycle, but should deal according to turnCycle
 function dealCards() {
-	var attackerIndex = this.getPlayerIndexForState("attacking");
+	var attackerIndex = this.getPlayerInGameIndexForState("attacking");
 
-	for (var i = attackerIndex; i < this.players.length; i++) {
-		var modIndex = i % this.players.length;
-		while (6 - this.players[modIndex].numberOfCards() > 0 && this.deck.numberOfCards() > 0) {
-			this.players[modIndex].giveCard(this.deck.removeCard());
+	for (var i = attackerIndex; i < this.playersInGame.length; i++) {
+		var modIndex = i % this.playersInGame.length;
+		while (6 - this.playersInGame[modIndex].numberOfCards() > 0 && this.deck.numberOfCards() > 0) {
+			this.playersInGame[modIndex].giveCard(this.deck.removeCard());
 		}
 	}
 }
@@ -246,17 +265,17 @@ function dealCards() {
 function determineAttackOrder() {
 	var playersWithTrump = [];
 
-	for (var i = 0; i < this.players.length; i++) {
+	for (var i = 0; i < this.playersInGame.length; i++) {
 		playersWithTrump.push({
-			player: this.players[i],
-			trump: this.players[i].getLowestTrump(this.deck.getTrump().getSuit())
+			player: this.playersInGame[i],
+			trump: this.playersInGame[i].getLowestTrump(this.deck.getTrump().getSuit())
 		});
 	}
 
 	playersWithTrump.sort(sortByLowestTrump);
 
-	for (var i = 0; i < this.players.length; i++) {
-		this.players[i] = playersWithTrump[i].player;
+	for (var i = 0; i < this.playersInGame.length; i++) {
+		this.playersInGame[i] = playersWithTrump[i].player;
 	}
 
 	this.initializeAttackCycle();
@@ -333,6 +352,7 @@ function getDataForOpponents(data, playerIndex) {
 		data.opponentData.push({
 			opponent: opponentIndex[i].type,
 			name: user.getName(),
+			state: user.getState(),
 			numberOfCards: user.numberOfCards()
 		});
 	}
@@ -363,6 +383,14 @@ function getPlayers() {
 	return namesOfPlayers;
 }
 
+function getPlayerObjects() {
+	var players = [];
+	for (var i = 0; i < this.players.length; i++) {
+		players.push(this.players[i]);
+	}
+	return players;
+}
+
 function getPlayerSockets() {
 	var sockets = [];
 	for (var i = 0; i < this.players.length; i++) {
@@ -376,9 +404,9 @@ function getState() {
 }
 
 function initializeAttackCycle() {
-	var cycle = this.playerStateCycle[this.players.length - 2];
-	for (var i = 0; i < this.players.length; i++) {
-		this.players[i].setState(cycle[i]);
+	var cycle = this.playerStateCycle[this.playersInGame.length - 2];
+	for (var i = 0; i < this.playersInGame.length; i++) {
+		this.playersInGame[i].setState(cycle[i]);
 	}
 }
 
@@ -391,18 +419,30 @@ function isFull() {
 *
 * Player states are cycled if current turn is at the end
 * of an play cycle or no more cards can be played.
-* If the next turn is "waiting", it is skipped.
+* If the next turn is "waiting" or the defending player took
+* the cards, the turn is skipped.
+* If no more cards can be played, automatically discard the cards
+* in play and go to next round.
+*
+* @param {bool} forfeit Whether or not the last player took the cards and was defending.
 */
-function nextTurn() {
-	var cycle = this.turnCycle[this.players.length - 2];
+function nextTurn(forfeit) {
+	var cycle = this.turnCycle[this.playersInGame.length - 2];
 	var turnIndex = cycle.indexOf(this.currentTurn);
 	var nextTurnIndex = (turnIndex + 1) % cycle.length;
 
-	if (cycle[nextTurnindex] === "waiting") {
+	if (cycle[nextTurnindex] === "waiting" || forfeit) {
 		nextTurnIndex = (nextTurnIndex + 1) % cycle.length;
 	}
 
-	if (turnIndex === cycle.length || noMoreCardsCanBePlayed()) {
+	if (turnIndex === cycle.length) {
+		this.cyclePlayerStates();
+	}
+
+	if (noMoreCardsCanBePlayed()) {
+		if (this.cardsInPlay[0].length !== 0) { // Cards have not been discarded.
+			this.discardDeck.addCards(this.takeCardsInPlay());
+		}
 		this.cyclePlayerStates();
 	}
 
@@ -416,7 +456,7 @@ function nextTurn() {
 	function noMoreCardsCanBePlayed() {
 		return (
 			(cycle[turnIndex] === "defending") &&
-			(this.players[this.getPlayerIndexForState("defending")].numberOfCards() === 0 || this.attackCardsPlayedForRound >= 6)
+			(this.playersInGame[this.getPlayerInGameIndexForState("defending")].numberOfCards() === 0 || this.attackCardsPlayedForRound >= 6)
 		);
 	}
 }
@@ -479,10 +519,8 @@ function startGame() {
 	this.discardDeck = new deck.Deck(0);
 	this.state = "playing";
 	this.attackCardsPlayedForRound = 0;
+	this.playersInGame = this.players;
 
 	this.determineAttackOrder();
 	this.dealCards();
-
-	// TODO:
-	//	PLAY GAME! :))
 }
