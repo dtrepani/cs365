@@ -100,8 +100,8 @@ io.on("connection", function(socket) {
 	socket.on("takeCards", takeCards);
 	socket.on("checkIfCanPlayCard", checkIfCanPlayCard);
 
-	function checkIfCanPlayCard(roomNumber, cardIndex) {
-		io.in(rooms[roomNumber].getName()).emit("ifCanPlayCard", rooms[roomNumber].canPlayCard(socket, cardIndex));
+	function checkIfCanPlayCard(data) {
+		io.in(rooms[roomNumber].getName()).emit("ifCanPlayCard", rooms[data.roomNumber].canPlayCard(socket, data.cardIndex));
 	}
 
 	function discard(roomNumber) {
@@ -113,9 +113,9 @@ io.on("connection", function(socket) {
 	/**
 	* @see Room->playCard().
 	*/
-	function playCard(roomNumber, cardIndex) {
-		rooms[roomNumber].playCard(socket, cardIndex);
-		sendDataToRoom(roomNumber);
+	function playCard(data) {
+		rooms[data.roomNumber].playCard(socket, data.cardIndex);
+		sendDataToRoom(data.roomNumber);
 	}
 
 	function takeCards(roomNumber) {
@@ -229,7 +229,7 @@ function sendDataToRoom(roomNumber) {
 	var playerSockets = rooms[roomNumber].getPlayerSockets();
 	for (var i = 0; i < playerSockets.length; i++) {
 		var data = getDataFor(roomNumber, playerSockets[i]);
-		// console.log(data);
+		console.log(data);
 		playerSockets[i].emit("sendData", data);
 	}
 }
@@ -275,7 +275,7 @@ function updatePlayerScore(db, user, callback) {
 	collection.update(
 		{name: user.name},
 		{$inc: {gamesPlayed: 1, gamesLost: user.gameLost}},
-		{ upsert: true }
+		{ upsert: true },
 		updateResult
 	);
 
@@ -311,22 +311,22 @@ function findResult(err, result) {
 	}
 }
 
-mongoClient.connect("mongodb://localhost:8037/durak", function(err, database) {
-	if (err) throw err;
-	db = database;
-	console.log("Connected to Mongo.");
+// mongoClient.connect("mongodb://localhost:8037/durak", function(err, database) {
+// 	if (err) throw err;
+// 	db = database;
+// 	console.log("Connected to Mongo.");
 
 	server.listen(8028, function() {
 		initRooms();
 		console.log("Server is listening on port 8028");
 
-		addPlayerScore(db, {name: "test", gameLost: 0}, function(result) {
-			console.log(result);
-		});
+		// addPlayerScore(db, {name: "test", gameLost: 0}, function(result) {
+		// 	console.log(result);
+		// });
 
-		getTopPlayers(db, function(result) {
-			console.log(result);
-		});
+		// getTopPlayers(db, function(result) {
+		// 	console.log(result);
+		// });
 	});
-});
+// });
 
