@@ -11,6 +11,8 @@ function Deck(aNumberOfCards) {
 		this.generateAllCards();
 		this.shuffle(aNumberOfCards);
 		this.trump = this.cards.pop();
+	} else {
+		this.cards = [];
 	}
 }
 
@@ -29,7 +31,7 @@ function addCard(aCard) {
 }
 
 function addCards(aCards) {
-	while (aCards !== 0) {
+	while (aCards.length !== 0) {
 		this.cards.push(aCards.pop());
 	}
 }

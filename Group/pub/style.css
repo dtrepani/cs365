@@ -9,6 +9,12 @@ body {
 	-moz-background-size: cover;
 	background-size: cover;
 }
+canvas {
+	z-index:1;
+	border: 2px solid black;
+}
+
+
 #username {
 	text-align:center;
 	background-color: rgba(111, 163, 75, .5);

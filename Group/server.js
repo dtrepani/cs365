@@ -32,7 +32,7 @@ io.on("connection", function(socket) {
 			var user = allPlayers.splice(userIndex, 1)[0];
 			console.log(user.getName() + " disconnected :(");
 		} else {
-			console.log("Disconnected :(");
+			console.log("Somebody disconnected :(");
 		}
 
 		if (checkIfPlayerIsInRoom(socket)) {
@@ -76,7 +76,6 @@ io.on("connection", function(socket) {
 		var roomNumber = getRoomIndexOfPlayer(socket);
 		var user = allPlayers[getIndexOfPlayer(socket, allPlayers)];
 		user.setState(playerState);
-		console.log("user: " + user.getName() + " - state: " + user.getState());
 
 		if (rooms[roomNumber].readyToStart()) {
 			console.log("Ready to start in room " + roomNumber);
@@ -98,23 +97,19 @@ io.on("connection", function(socket) {
 	socket.on("discard", discard);
 	socket.on("playCard", playCard);
 	socket.on("takeCards", takeCards);
-	socket.on("checkIfCanPlayCard", checkIfCanPlayCard);
-
-	function checkIfCanPlayCard(data) {
-		io.in(rooms[roomNumber].getName()).emit("ifCanPlayCard", rooms[data.roomNumber].canPlayCard(socket, data.cardIndex));
-	}
+	socket.on("take", takeCards); // Duplicate
 
 	function discard(roomNumber) {
 		rooms[roomNumber].discard(socket);
 		sendDataToRoom(roomNumber);
-		checkIfGameIsDone();
+		checkIfGameIsDone(roomNumber);
 	}
 
 	/**
 	* @see Room->playCard().
 	*/
 	function playCard(data) {
-		rooms[data.roomNumber].playCard(socket, data.cardIndex);
+		rooms[data.roomNumber].playCard(socket, data.cardIndex, data.slotIndex);
 		sendDataToRoom(data.roomNumber);
 	}
 
@@ -125,7 +120,6 @@ io.on("connection", function(socket) {
 });
 
 function addPlayerToRoom(roomNumber, socket) {
-	console.log(roomNumber);
 	var user = playersNotInRoom.splice(getIndexOfPlayer(socket, playersNotInRoom), 1)[0];
 	rooms[roomNumber].addPlayer(user);
 
@@ -229,7 +223,7 @@ function sendDataToRoom(roomNumber) {
 	var playerSockets = rooms[roomNumber].getPlayerSockets();
 	for (var i = 0; i < playerSockets.length; i++) {
 		var data = getDataFor(roomNumber, playerSockets[i]);
-		console.log(data);
+		// console.log(data);
 		playerSockets[i].emit("sendData", data);
 	}
 }
