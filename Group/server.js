@@ -148,10 +148,8 @@ function checkIfGameIsDone(roomNumber) {
 				name: users[i].getName(),
 				gameLost: (users[i].numberOfCards > 0) ? 1 : 0
 			};
+			updatePlayerScore(db, user);
 		}
-		// TODO:
-		// add +1 to all player usernames games played
-		// add +1 to losing player (only one with not 0 cards) gameslost
 	}
 }
 
@@ -277,6 +275,7 @@ function updatePlayerScore(db, user, callback) {
 	collection.update(
 		{name: user.name},
 		{$inc: {gamesPlayed: 1, gamesLost: user.gameLost}},
+		{ upsert: true }
 		updateResult
 	);
 
@@ -312,22 +311,22 @@ function findResult(err, result) {
 	}
 }
 
-// mongoClient.connect("mongodb://localhost:8037/final", function(err, database) {
-// 	if (err) throw err;
-// 	db = database;
-// 	console.log("Connected to Mongo.");
+mongoClient.connect("mongodb://localhost:8037/durak", function(err, database) {
+	if (err) throw err;
+	db = database;
+	console.log("Connected to Mongo.");
 
 	server.listen(8028, function() {
 		initRooms();
 		console.log("Server is listening on port 8028");
 
-// 		addPlayerScore(db, {name: "test", gameLost: 0}, function(result) {
-// 			console.log(result);
-// 		});
+		addPlayerScore(db, {name: "test", gameLost: 0}, function(result) {
+			console.log(result);
+		});
 
-// 		getTopPlayers(db, function(result) {
-// 			console.log(result);
-// 		});
+		getTopPlayers(db, function(result) {
+			console.log(result);
+		});
 	});
-// });
+});
 
