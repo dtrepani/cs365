@@ -76,6 +76,7 @@ Room.prototype = {
 	checkIfPlayerCanBeRemovedFromGame: checkIfPlayerCanBeRemovedFromGame,
 	dealCards: dealCards,
 	discard: discard,
+	endGame: endGame,
 	makeMove: makeMove,
 	nextRound: nextRound,
 	nextTurn: nextTurn,
@@ -129,10 +130,19 @@ function checkIfPlayerCanBeRemovedFromGame(user) {
 function dealCards() {
 	var attackerIndex = this.getPlayerInGameIndexForState("attacking");
 
-	for (var i = 0; i < this.playersInGame.length - 1; i++) {
+	for (var i = 0; i < this.playersInGame.length; i++) {
 		var modIndex = (attackerIndex + i) % (this.playersInGame.length);
-		while (6 - this.playersInGame[modIndex].numberOfCards() > 0 && this.deck.numberOfCards() > 0) {
-			this.playersInGame[modIndex].giveCard(this.deck.removeCard());
+		while (
+			(this.playersInGame[modIndex].numberOfCards() &&
+				(6 - this.playersInGame[modIndex].numberOfCards() > 0) &&
+				((this.deck.numberOfCards() > 0)) ||
+			(this.deck.numberOfCards() === 0 && !this.deck.isTrumpTaken()))
+		) {
+			if (this.deck.numberOfCards() === 0) {
+				this.playersInGame[modIndex].giveCard(this.deck.takeTrump());
+			} else {
+				this.playersInGame[modIndex].giveCard(this.deck.removeCard());
+			}
 		}
 	}
 }
@@ -168,35 +178,26 @@ function determineAttackOrder() {
 	this.initializeAttackCycle();
 }
 
-function sortByLowestTrump(player1, player2) {
-	player1 = player1.trump;
-	player2 = player2.trump;
+function discard(socket) {
+	var user = this.getPlayerWithSocket(socket);
+	if (user) {
+		var userState = user.getState();
+		if (userState === "attacking") {
+			this.attackerDiscard.attacking = true;
+		} else if (userState === "supporting") {
+			this.attackerDiscard.supporting = true;
+		}
 
-	if (!player1 && !player2) {
-		return 0;
-	} else if (!player2 || (player1 && player1.getNumber() < player2.getNumber())) {
-		return -1;
-	} else if (!player1 || (player2 && player1.getNumber() > player2.getNumber())) {
-		return 1;
-	} else {
-		return 0;
+		if (this.attackerDiscard.attacking && (this.playersInGame.length === 2 || this.attackerDiscard.supporting) && this.cardsInPlay.attacking.length > 0) {
+			this.discardDeck.addCards(this.takeCardsInPlay());
+			console.log("Discarding");
+			this.nextRound(true);
+		}
 	}
 }
 
-function discard(socket) {
-	var user = this.getPlayerWithSocket(socket);
-	var userState = user.getState();
-	if (userState === "attacking") {
-		this.attackerDiscard.attacking = true;
-	} else if (userState === "supporting") {
-		this.attackerDiscard.supporting = true;
-	}
-
-	if (this.attackerDiscard.attacking && (this.playersInGame.length === 2 || this.attackerDiscard.supporting) && this.cardsInPlay.attacking.length > 0) {
-		this.discardDeck.addCards(this.takeCardsInPlay());
-		console.log("Discarding");
-		this.nextRound();
-	}
+function endGame(result) {
+	// TODO
 }
 
 /**
@@ -321,39 +322,50 @@ function isFull() {
 
 function makeMove(user, cardIndex, slotIndex) {
 	var userState = user.getState();
-	if (userState === this.currentTurn || userState === "supporting") {
-		if (userState === "defending") {
-			this.cardsInPlay.defending[slotIndex] = user.playCard(cardIndex);
-		} else if (userState === "attacking" || userState === "supporting") {
-			this.cardsInPlay.attacking.push(user.playCard(cardIndex));
-			this.cardsInPlay.defending.push(undefined);
-		}
+	if (user) {
+		if (userState === this.currentTurn || (this.currentTurn === "defending" && userState === "supporting")) {
+			if (userState === "defending") {
+				this.cardsInPlay.defending[slotIndex] = user.playCard(cardIndex);
+			} else if (userState === "attacking" || userState === "supporting") {
+				this.cardsInPlay.attacking.push(user.playCard(cardIndex));
+				this.cardsInPlay.defending.push(undefined);
+			}
 
-		return true;
+			return true;
+		}
+		return false;
 	}
-	return false;
 }
 
 /**
 * Called on round end. Cycles player states for the
 * next round and deals the cards for that round.
+*
+* @param {bool} dealCardsOnRound	Will only ever not need to deal cards when
+*									defender takes cards, which will call nextRound()
+*									twice, but only need to deal cards once.
 */
-function nextRound() {
-	console.log("Next round");
+function nextRound(dealCardsOnRound) {
 	for (var i = 0; i < this.playersInGame.length; i++) {
 		this.checkIfPlayerCanBeRemovedFromGame(this.playersInGame[i]);
 	}
 
-	var cycle = this.playerStateCycle[this.playersInGame.length - 2];
-	this.currentTurn = "attacking";
+	if (this.playersInGame.length > 1) {
+		console.log("Next round");
 
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		var user = this.playersInGame[i];
-		var stateIndex = cycle.indexOf(user.getState());
-		user.setState(cycle[(stateIndex + 1) % cycle.length]);
+		if (dealCardsOnRound) {
+			this.dealCards();
+		}
+
+		var cycle = this.playerStateCycle[this.playersInGame.length - 2];
+		this.currentTurn = "attacking";
+
+		for (var i = 0; i < this.playersInGame.length; i++) {
+			var user = this.playersInGame[i];
+			var stateIndex = cycle.indexOf(user.getState());
+			user.setState(cycle[(stateIndex + 1) % cycle.length]);
+		}
 	}
-
-	this.dealCards();
 }
 
 /**
@@ -361,22 +373,15 @@ function nextRound() {
 *
 * Player states are cycled if current turn is at the end
 * of an play cycle or no more cards can be played.
-* If the next turn is "waiting" or the defending player took
-* the cards, the turn is skipped.
-*
-* @param {bool} forfeit Whether or not the last player took the cards and was defending.
 */
-function nextTurn(forfeit) {
+function nextTurn() {
 	if (this.currentTurn === "defending" && this.noMoreCardsCanBePlayed()) {
 		console.log("No more cards can be played.");
-		this.nextRound();
-	}
-
-	if (forfeit) {
-		this.nextRound();
+		this.nextRound(true);
 	}
 
 	this.currentTurn = (this.currentTurn === "defending") ? "attacking" : "defending";
+
 	console.log("Turn: " + this.currentTurn);
 }
 
@@ -402,9 +407,9 @@ function playCard(socket, cardIndex, slotIndex) {
 	if (this.makeMove(user, cardIndex, slotIndex)) {
 		var state = user.getState();
 		if (state === "attacking") {
-			this.nextTurn(false);
+			this.nextTurn();
 		} else if (state === "defending" && this.allAttacksHaveBeenDefended()) {
-			this.nextTurn(false);
+			this.nextTurn();
 		}
 	}
 }
@@ -420,11 +425,16 @@ function playerIsInRoom(socket) {
 
 function playerTakeCards(socket) {
 	var user = this.getPlayerWithSocket(socket);
-	var userState = user.getState();
-	if (this.currentTurn === "defending" && userState === "defending" && this.cardsInPlay.attacking.length > 0) {
-		user.takeCards(this.takeCardsInPlay());
-		console.log("Taking cards");
-		this.nextRound();
+	if (user) {
+		var userState = user.getState();
+		if (this.currentTurn === "defending" && userState === "defending" && this.cardsInPlay.attacking.length > 0) {
+			user.takeCards(this.takeCardsInPlay());
+			console.log("Taking cards");
+			this.nextRound(true);
+			if (this.playersInGame.length === 2) {
+				this.nextRound(false);
+			}
+		}
 	}
 }
 
@@ -484,6 +494,21 @@ function startGame() {
 	this.attackerDiscard.supporting = false;
 
 	this.determineAttackOrder();
+}
+
+function sortByLowestTrump(player1, player2) {
+	player1 = player1.trump;
+	player2 = player2.trump;
+
+	if (!player1 && !player2) {
+		return 0;
+	} else if (!player2 || (player1 && player1.getNumber() < player2.getNumber())) {
+		return -1;
+	} else if (!player1 || (player2 && player1.getNumber() > player2.getNumber())) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 function takeCardsInPlay() {

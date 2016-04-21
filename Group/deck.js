@@ -11,6 +11,7 @@ function Deck(aNumberOfCards) {
 		this.generateAllCards();
 		this.shuffle(aNumberOfCards);
 		this.trump = this.cards.pop();
+		this.trumpTaken = false;
 	} else {
 		this.cards = [];
 	}
@@ -22,6 +23,8 @@ Deck.prototype = {
 	generateAllCards: generateAllCards,
 	numberOfCards: numberOfCards,
 	getTrump: getTrump,
+	isTrumpTaken: isTrumpTaken,
+	takeTrump: takeTrump,
 	shuffle: shuffle,
 	removeCard: removeCard
 };
@@ -47,11 +50,20 @@ function generateAllCards() {
 	}
 }
 
+function isTrumpTaken() {
+	return this.trumpTaken;
+}
+
 function numberOfCards() {
 	return this.cards.length;
 }
 
 function getTrump() {
+	return this.trump;
+}
+
+function takeTrump() {
+	this.trumpTaken = true;
 	return this.trump;
 }
 

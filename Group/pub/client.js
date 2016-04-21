@@ -62,6 +62,9 @@ function doTheRestOfThisWhenLoaded() {
 	socket.on("lockRoom", function(roomNumber) {
 		$("#lock"+roomNumber+"room").css("visibility",  "visible");
 		$("#roomDiv .room").eq(roomNumber).find(".joinBtn").prop("disabled",true);
+		$("#roomDiv .room").eq(roomNumber).find(".joinBtn").hide();
+		$("#roomDiv .room").eq(roomNumber).find(".joinBtn").css("visibility",  "visible");
+		
 	});
 
 	socket.on("nameExists", function(name) {
@@ -87,7 +90,7 @@ function doTheRestOfThisWhenLoaded() {
 		for(i = 0; i < data.cardsInPlay.attacking.length; ++i)
 		{
 			attackingCardsInPlay[i] = findCard(data.cardsInPlay.attacking[i].suit, data.cardsInPlay.attacking[i].number);
-
+			
 		//	console.log();
 		}
 		defendingCardsInPlay = []
@@ -98,16 +101,16 @@ function doTheRestOfThisWhenLoaded() {
 				defendingCardsInPlay[i] = findCard(data.cardsInPlay.defending[i].suit, data.cardsInPlay.defending[i].number);
 			}
 		}
-
+		
 		myUsername = data.myUsername;
 		myState = data.state;
 		trump = findCard(data.trump.suit, data.trump.number);
 		opponents = data.opponentData;
 		//console.log(opponents);
 		ctx.clearRect(0, 0, canvasW, canvasH);
-		clickCanvas();
+		//clickCanvas(); 
 		drawEverything();
-
+		
 	});
 
 	socket.on("sendMessage", function(msg) {
@@ -115,10 +118,11 @@ function doTheRestOfThisWhenLoaded() {
 		$("#msgRoom").text(msg);
 	});
 
-
+	
 	socket.on("showRooms", function(username) {
 		showRoomScreen();
 	});
+	
 
 	// NOTE: Had two functions of the same name, just with different capitalizations and the server was calling the other one. :) Works fine now.
 	socket.on("startGame", function(usersInRoom) {
@@ -136,11 +140,13 @@ function doTheRestOfThisWhenLoaded() {
 	for(i = 0; i < 6; ++i) {
 		$("#roomDiv .room").eq(i).find(".joinBtn").click(makeClickHandlerFor(i));
 	}
-
+	
 	socket.on("ifCanPlayCard", function (b){
 		canPlay = b;
 	});
-
+	$("#canv").click(makeCanvasHandler);
+	//clickCanvas();
+	
 }
 
 function updateRoomsInfo(usersInRooms) {
@@ -179,7 +185,7 @@ function showRoomScreen() {
 }
 
 function showMainScreen() {
-
+	
 	canvas = $("canvas")[0];
 	canvas.width = canvasW;
 	canvas.height = canvasH;
@@ -195,7 +201,7 @@ function showMainScreen() {
 
 function findCard(suit, number)
 {
-	var i;
+	var i; 
 	var j;
 	for (i = 0; i < 4; ++i) {
 		for(j =0; j < 9; ++j)
@@ -215,55 +221,95 @@ function isCanvasSupported() {
 
 function drawEverything()
 {
-
+	
 	drawMyCards();
 	drawDeck();
 	drawOpponents();
 	drawSlots();
 	window.requestAnimationFrame(drawEverything);
 }
-
-function clickCanvas()
+function makeCanvasHandler(e)
 {
-	var ev = $._data(canvas, 'events');
-	if(!(ev && ev.click))
-	{
-		canvas.addEventListener('mouseup', function(e)
-		{
+	console.log("clicked");
+//			e.target.removeEventListener(e.type, arguments.callee); // ??? 
 			var cardW = 110;
 			var cardH = 160;
 			e.preventDefault();
 			var x = e.pageX;
 			var y = e.pageY;
-
+			
 			for(var i = 0; i < myCards.length; ++i)
-			{
-				if(x <= (myCards[i].x + cardW) && x >= myCards[i].x &&
+			{	
+				
+				if(x <= (myCards[i].x + cardW) && x >= myCards[i].x && 
 					y <= (myCards[i].y + cardH) && y >=myCards[i].y )
 				{
 					if(checkIfCanPlayCard(myCards[i]))
 					{
-						//ctx.clearRect(0, 0, canvasW, canvasH);
-						//console.log("slot index = " + slotIndex);
-						//console.log("slot cardIndex = " + i);
-						//console.log("slot roomNumber = " + myRoomNumber);
-						socket.emit("playCard", {roomNumber: myRoomNumber, cardIndex: i, slotIndex: slotIndex});
-						 // if it's an attaking card, slot index = length of cardOnPlay.attaking
+						socket.emit("playCard", {roomNumber: myRoomNumber, 
+											cardIndex: i, 
+											slotIndex: slotIndex});
+										
+						console.log("emitPlayCard");
+						
 					}
 				}
 			}
 			for(i = 0; i < 2; ++ i)
 			{
-				if( x <= (btns[i].x + btns[i].w) && x >= btns[i].x &&
+				if( x <= (btns[i].x + btns[i].w) && x >= btns[i].x && 
 					y <= (btns[i].y + btns[i].h) && y >=btns[i].y )
 				{
 					if(checkIfButtonEnabled(btns[i]))
 						socket.emit(btns[i].name, myRoomNumber)
 				}
 			}
+}
 
+function clickCanvas() 
+{
+	var ev = $._data($("canvas")[0], 'events');
+	if(!(ev && ev.click)) 
+	{
+		$("#canv").click(function(e)
+		{
+			console.log("clicked");
+//			e.target.removeEventListener(e.type, arguments.callee); // ??? 
+			var cardW = 110;
+			var cardH = 160;
+			e.preventDefault();
+			var x = e.pageX;
+			var y = e.pageY;
+			
+			for(var i = 0; i < myCards.length; ++i)
+			{	
+				
+				if(x <= (myCards[i].x + cardW) && x >= myCards[i].x && 
+					y <= (myCards[i].y + cardH) && y >=myCards[i].y )
+				{
+					if(checkIfCanPlayCard(myCards[i]))
+					{
+						socket.emit("playCard", {roomNumber: myRoomNumber, 
+											cardIndex: i, 
+											slotIndex: slotIndex});
+										
+						console.log("emitPlayCard");
+						
+					}
+				}
+			}
+			for(i = 0; i < 2; ++ i)
+			{
+				if( x <= (btns[i].x + btns[i].w) && x >= btns[i].x && 
+					y <= (btns[i].y + btns[i].h) && y >=btns[i].y )
+				{
+					if(checkIfButtonEnabled(btns[i]))
+						socket.emit(btns[i].name, myRoomNumber)
+				}
+			}
+			//e.target.removeEventListener(e.type, arguments.callee);
+		//	$("canvas")[0].unbind('click');
 		}, false);
-
 	}
 }
 
@@ -282,7 +328,7 @@ function checkIfButtonEnabled(btn)
 	{
 		if(attackingCardsInPlay.length > 0)
 			return true
-
+		
 		return false;
 	}
 }
@@ -302,7 +348,7 @@ function checkIfCanPlayCard(card) {
 		}
 		for(i = 0; i < defendingCardsInPlay.length; ++i)
 		{
-			if(defendingCardsInPlay[i] !== undefined && defendingCardsInPlay[i].number == card.number)
+			if(defendingCardsInPlay[i] !== null && defendingCardsInPlay[i].number == card.number)
 			{
 				slotIndex = attackingCardsInPlay.length;
 				return true;
@@ -329,7 +375,7 @@ function checkIfCanPlayCard(card) {
 $(doThisWhenLoaded);
 
 function generateCardImages() {
-	var i;
+	var i; 
 	var j;
 	var suits = ["hearts", "diamonds", "spades", "clubs"];
 	var tn = ['6','7','8','9', '10','jack','queen', 'king','ace'];
@@ -343,7 +389,7 @@ function generateCardImages() {
 			var k = new Image();
 			k.src = ("cards/" + tn[j] +"_of_" + suits[i]+".png");
 			k.addEventListener("load", imageCounter);
-
+			
 			var card = {
 				x : 0,
 				y : 0,
@@ -355,12 +401,12 @@ function generateCardImages() {
 			cards[i][j] = card;
 		}
 	}
-
+	
 	var takeBtn = new Image();
 	takeBtn.src = "Take.png";
 	var discardBtn = new Image();
 	discardBtn.src = "Discard.png";
-
+	
 	btns[0] = {name: "takeCards", img: takeBtn, x: 1100,y:600,  w: 87, h: 46};
 	btns[1] = {name: "discard", img: discardBtn, x: 1100,y:650, w: 111,h: 46};
 	//console.log(btns);
@@ -374,17 +420,17 @@ function imageCounter() {
 }
 
 function drawEverything() {
-
+	
 	drawMyCards();
 	drawDeck();
 	drawOpponents();
 	drawSlots();
-
+	
 }
 
 function drawSlots() {
-
-	var contW = canvasW /2 ; // 320
+	
+	var contW = canvasW /2 ; // 320 
 	var contH = canvasH/3;
 	var contX = canvasW / 5;
 	var contY =  canvasH /2 - contH/2;
@@ -416,7 +462,7 @@ function drawMyCards() {
 		var contH = 160;
 		//ctx.rect(contX, contY, contW, contH);
 		//ctx.stroke();
-
+		
 		ctx.font = "25px Arial";
 		ctx.fillText(myUsername + ": " + myState,contX,contY - 15);
 
@@ -427,7 +473,7 @@ function drawMyCards() {
 			myCards[t].y = contY;
 			ctx.drawImage(myCards[t].img, myCards[t].x , myCards[t].y, 110, 160);
 		}
-
+	
 		ctx.drawImage(btns[0].img, btns[0].x, btns[0].y);
 		ctx.drawImage(btns[1].img, btns[1].x, btns[1].y);
 }
@@ -450,7 +496,7 @@ function drawDeck() {
 		ctx.drawImage(backCard, contX+9, contY,110,160);
 		ctx.drawImage(backCard, contX+12, contY,110,160);
 		ctx.drawImage(backCard, contX+13, contY,110,160);
-
+		
 	});
 }
 
@@ -459,7 +505,7 @@ function drawOpponents() {
 	if(opponents.length == 1)
 	{
 		drawFrontOpponent(opponents[0].name, opponents[0].state, opponents[0].numberOfCards);
-	}
+	} 
 	else if (opponents.length == 2)
 	{
 		for(i = 0; i < 2; ++i)
@@ -469,7 +515,7 @@ function drawOpponents() {
 			else drawAfterOpponent(opponents[i].name, opponents[i].state, opponents[i].numberOfCards);
 		}
 	}
-	else
+	else 
 	{
 		for(i = 0; i < 3; ++i)
 		{
@@ -477,11 +523,11 @@ function drawOpponents() {
 				drawBeforeOpponent(opponents[i].name, opponents[i].state, opponents[i].numberOfCards);
 			else if(opponents[i].opponent == 'after')
 				drawAfterOpponent(opponents[i].name, opponents[i].state, opponents[i].numberOfCards);
-			else drawFrontOpponent(opponents[i].name, opponents[i].state, opponents[i].numberOfCards);
-
+			else drawFrontOpponent(opponents[i].name, opponents[i].state, opponents[i].numberOfCards);	
+			
 		}
 	}
-
+	
 }
 
 function drawFrontOpponent(name, state, n)  {
@@ -490,13 +536,13 @@ function drawFrontOpponent(name, state, n)  {
 		var contH = 160;
 		var contX = canvasW / 2 - contW/2 - 20; // 320
 		var contY =  10;
-
+		
 		var distance = contW/n;
 		ctx.rect(contX, contY, contW, contH);
 		ctx.stroke();
 		ctx.font = "20px Arial";
 		ctx.fillText(name + ": " + state , contX, contY + contH + 20);
-
+		
 		for(var i = 0; i < n; ++i)
 		{
 			ctx.drawImage(backCard, contX + i*distance, contY,110,160)
@@ -510,7 +556,7 @@ function drawBeforeOpponent(name, state, n) {
 		var contH = 160;
 		var contX = canvasW / 2 + contW - 20; // 320
 		var contY =  10;
-
+		
 		var distance = contW/n;
 		ctx.rect(contX, contY, contW, contH);
 		ctx.stroke();
@@ -529,13 +575,13 @@ function drawAfterOpponent(name, state, n) {
 		var contH = 160;
 		var contX = canvasW / 2 - 2*contW - 20; // 320
 		var contY =  10;
-
+		
 		var distance = contW/n;
 		ctx.rect(contX, contY, contW, contH);
 		ctx.stroke();
 		ctx.font = "20px Arial";
 		ctx.fillText(name + ": " + state , contX, contY + contH + 20);
-
+		
 		for(var i = 0; i < n; ++i)
 		{
 			ctx.drawImage(backCard, contX + i*distance, contY,110, 160)
