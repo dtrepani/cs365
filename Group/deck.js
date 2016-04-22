@@ -23,7 +23,6 @@ Deck.prototype = {
 	generateAllCards: generateAllCards,
 	numberOfCards: numberOfCards,
 	getTrump: getTrump,
-	isTrumpTaken: isTrumpTaken,
 	takeTrump: takeTrump,
 	shuffle: shuffle,
 	removeCard: removeCard
@@ -50,10 +49,6 @@ function generateAllCards() {
 	}
 }
 
-function isTrumpTaken() {
-	return this.trumpTaken;
-}
-
 function numberOfCards() {
 	return this.cards.length;
 }
@@ -63,8 +58,9 @@ function getTrump() {
 }
 
 function takeTrump() {
-	this.trumpTaken = true;
-	return this.trump;
+	var trumpCard = this.trump;
+	this.trump = null;
+	return trumpCard;
 }
 
 function shuffle(numberOfCards) {

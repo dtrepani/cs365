@@ -23,6 +23,7 @@ Player.prototype = {
 	getState: getState,
 	getName: getName,
 	giveCard: giveCard,
+	hasCardsThatMatchNumbers: hasCardsThatMatchNumbers,
 	isReady: isReady,
 	isSocket: isSocket,
 	numberOfCards: numberOfCards,
@@ -71,6 +72,17 @@ function getState() {
 
 function giveCard(aCard) {
 	this.cards.push(aCard);
+}
+
+function hasCardsThatMatchNumbers(otherCards) {
+	for (var i = 0; i < otherCards.length; i++) {
+		for (var j = 0; j < this.cards.length; j++) {
+			if (otherCards[i] && this.cards[j].getNumber() === otherCards[i].getNumber()) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 function isReady() {

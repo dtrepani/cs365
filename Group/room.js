@@ -71,12 +71,11 @@ Room.prototype = {
 	getPlayerInGameIndexForState: getPlayerInGameIndexForState,
 
 	// Game actions
+	allAttackCardsHaveBeenPlayed: allAttackCardsHaveBeenPlayed,
 	allAttacksHaveBeenDefended: allAttacksHaveBeenDefended,
-	checkIfGameIsDone: checkIfGameIsDone,
 	checkIfPlayerCanBeRemovedFromGame: checkIfPlayerCanBeRemovedFromGame,
 	dealCards: dealCards,
 	discard: discard,
-	endGame: endGame,
 	makeMove: makeMove,
 	nextRound: nextRound,
 	nextTurn: nextTurn,
@@ -100,6 +99,11 @@ function addPlayer(player) {
 	return false;
 }
 
+function allAttackCardsHaveBeenPlayed() {
+	var user = this.players[this.getPlayerInGameIndexForState("attacking")];
+	return !user.hasCardsThatMatchNumbers(this.cardsInPlay.attacking) && !user.hasCardsThatMatchNumbers(this.cardsInPlay.defending);
+}
+
 function allAttacksHaveBeenDefended() {
 	for (var i = 0; i < this.cardsInPlay.defending.length; i++) {
 		if (!this.cardsInPlay.defending[i]) {
@@ -107,15 +111,6 @@ function allAttacksHaveBeenDefended() {
 		}
 	}
 	return true;
-}
-
-function checkIfGameIsDone() {
-	if (this.playersInGame.length === 1) {
-		this.state = "waiting";
-		this.playersInGame[0].setState("waiting");
-		return true;
-	}
-	return false;
 }
 
 function checkIfPlayerCanBeRemovedFromGame(user) {
@@ -136,7 +131,7 @@ function dealCards() {
 			(this.playersInGame[modIndex].numberOfCards() &&
 				(6 - this.playersInGame[modIndex].numberOfCards() > 0) &&
 				((this.deck.numberOfCards() > 0)) ||
-			(this.deck.numberOfCards() === 0 && !this.deck.isTrumpTaken()))
+			(this.deck.numberOfCards() === 0 && this.deck.getTrump()))
 		) {
 			if (this.deck.numberOfCards() === 0) {
 				this.playersInGame[modIndex].giveCard(this.deck.takeTrump());
@@ -196,14 +191,10 @@ function discard(socket) {
 	}
 }
 
-function endGame(result) {
-	// TODO
-}
-
 /**
 * Get data to send to the player about the game.
 *
-* @return {mixed[]} Data in the form of {cards, state, cardsInPlay{attacking, defending}, opponentData = {opponent, name, numberOfCards}}.
+* @return {mixed[]} Data in the form of {cards, state, trump, numberOfCardsInDeck, cardsInPlay{attacking, defending}, opponentData = {opponent, name, numberOfCards}}.
 */
 function getDataForPlayer(socket) {
 	var data = {};
@@ -211,6 +202,7 @@ function getDataForPlayer(socket) {
 
 	data.cardsInPlay = this.cardsInPlay;
 	data.trump = this.deck.getTrump();
+	data.numberOfCardsInDeck = this.deck.numberOfCards();
 
 	for (var i = 0; i < this.players.length; i++) {
 		var user = this.players[i];
@@ -281,11 +273,7 @@ function getPlayers() {
 }
 
 function getPlayerObjects() {
-	var players = [];
-	for (var i = 0; i < this.players.length; i++) {
-		players.push(this.players[i]);
-	}
-	return players;
+	return this.players;
 }
 
 function getPlayerSockets() {
@@ -321,8 +309,8 @@ function isFull() {
 }
 
 function makeMove(user, cardIndex, slotIndex) {
-	var userState = user.getState();
 	if (user) {
+		var userState = user.getState();
 		if (userState === this.currentTurn || (this.currentTurn === "defending" && userState === "supporting")) {
 			if (userState === "defending") {
 				this.cardsInPlay.defending[slotIndex] = user.playCard(cardIndex);
@@ -406,7 +394,7 @@ function playCard(socket, cardIndex, slotIndex) {
 	var user = this.getPlayerWithSocket(socket);
 	if (this.makeMove(user, cardIndex, slotIndex)) {
 		var state = user.getState();
-		if (state === "attacking") {
+		if (state === "attacking" && this.allAttackCardsHaveBeenPlayed()) {
 			this.nextTurn();
 		} else if (state === "defending" && this.allAttacksHaveBeenDefended()) {
 			this.nextTurn();

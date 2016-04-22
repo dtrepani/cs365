@@ -13,8 +13,23 @@ canvas {
 	z-index:1;
 	border: 2px solid black;
 }
+#userStateDiv {
+	display: table;
+	background-color: rgba(111, 163, 75, .5);
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom:20px;
+}
 
-
+.userStat {
+	font-weight:bold;
+	color:#E60505;
+	font-size:30px;
+	text-align:center;
+	font-family:helvetica, sans-serif;
+}
 #username {
 	text-align:center;
 	background-color: rgba(111, 163, 75, .5);
@@ -93,6 +108,7 @@ p , h2 {
 	border: 2px solid rgb(27, 57, 29);
 
 }
+
 
 .joinBtn {
 	font-size: 25px;
