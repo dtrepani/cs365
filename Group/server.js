@@ -1,3 +1,8 @@
+/**
+* FINAL PROJECT: DURAK
+* Desiree and Sanira
+*/
+
 var express = require("express");
 var app = express();
 

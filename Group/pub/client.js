@@ -1,3 +1,8 @@
+/**
+* FINAL PROJECT: DURAK
+* Desiree and Sanira
+*/
+
 var socket = io();
 var myUsername = "myUsername"
 var myRoomNumber;
@@ -400,11 +405,7 @@ function drawSlots() {
 	var distance = contW;
 	if(attackingCardsInPlay.length != 0 || attackingCardsInPlay.length !== undefined)
 	{
-		if(attackingCardsInPlay.length <= 6) {
-			 distance = contW/6;
-		} else {
-			 distance = contW/attackingCardsInPlay.length;
-		}
+		distance = contW/attackingCardsInPlay.length;
 	}
 	for(var t = 0; t < attackingCardsInPlay.length; ++t)
 	{

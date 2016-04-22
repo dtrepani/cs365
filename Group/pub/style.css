@@ -21,15 +21,17 @@ canvas {
 	margin-right: auto;
 	margin-top: 20px;
 	margin-bottom:20px;
+	padding: 5px;
 }
 
 .userStat {
 	font-weight:bold;
-	color:#E60505;
+	color:#A02222;
 	font-size:30px;
 	text-align:center;
 	font-family:helvetica, sans-serif;
 }
+
 #username {
 	text-align:center;
 	background-color: rgba(111, 163, 75, .5);
