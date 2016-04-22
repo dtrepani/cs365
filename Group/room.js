@@ -187,7 +187,7 @@ function discard(socket) {
 			this.attackerDiscard.supporting = true;
 		}
 
-		if (this.attackerDiscard.attacking && (this.players.length === 2 || this.attackerDiscard.supporting) && this.cardsInPlay.attacking.length > 0) {
+		if (this.attackerDiscard.attacking && this.cardsInPlay.attacking.length > 0) {
 			this.discardDeck.addCards(this.takeCardsInPlay());
 			console.log("Discarding");
 			this.nextRound(true);
