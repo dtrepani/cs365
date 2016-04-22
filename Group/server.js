@@ -18,19 +18,19 @@ var rooms = [];
 var allPlayers = [];
 var playersNotInRoom = [];
 var playersInRoom = []; // Cache variable. Do not set directly.
-var mongoDBEnabled = false;
+var mongoDBEnabled = true;
 var db;
 
 io.on("connection", function(socket) {
-	console.log("Somebody connected :)");
+	console.log(">> Somebody connected");
 
 	socket.on("disconnect", function() {
 		var userIndex = getIndexOfPlayer(socket, allPlayers);
 		if (userIndex !== -1) {
 			var user = allPlayers.splice(userIndex, 1)[0];
-			console.log(user.getName() + " disconnected :(");
+			console.log(">> " + user.getName() + " disconnected");
 		} else {
-			console.log("Somebody disconnected :(");
+			console.log(">> Somebody disconnected");
 		}
 
 		if (checkIfPlayerIsInRoom(socket)) {
@@ -46,13 +46,13 @@ io.on("connection", function(socket) {
 		if(playersNotInRoom.length > 0 && checkIfNameExists(username))
 			socket.emit("nameExists", username);
 		else  {
-			console.log(username + " is added");
+			console.log(">>> " + username + " has logged in");
 
 			var user = new player.Player(username, socket);
 			allPlayers.push(user);
 			playersNotInRoom.push(user);
 
-			updatePlayerScore(db, {name: username, gamePlayedInc: 0, gamesWonInc: 0 }, function(result) {});
+			addPlayerScore(db, { name: username, gamesPlayedInc: 0, gamesWonInc: 0 }, function(result) {});
 
 			socket.emit("showRooms", username);
 		}
@@ -89,42 +89,47 @@ io.on("connection", function(socket) {
 		}
 	});
 
-	socket.on("exitRoom", function(roomNumber) {
-		removePlayerFromRoom(roomNumber, socket);
-		updateRooms();
-	});
-
 	socket.on("discard", discard);
+	socket.on("endAttack", endAttack);
+	socket.on("exitRoom", exitRoom);
+	socket.on("getScoreData", getScoreData);
 	socket.on("getStatsForPlayer", getStatsForPlayer);
+	socket.on("leaveRoom", leaveRoom);
 	socket.on("playCard", playCard);
 	socket.on("takeCards", takeCards);
 	socket.on("take", takeCards); // Duplicate
-	socket.on("winGame", winGame);
+	socket.on("winGame", checkIfGameIsDone);
 
 	function discard(roomNumber) {
 		rooms[roomNumber].discard(socket);
 		sendDataToRoom(roomNumber);
 	}
 
+	function endAttack(roomNumber) {
+		rooms[roomNumber].endAttack();
+	}
+
+	function exitRoom(roomNumber) {
+		removePlayerFromRoom(roomNumber, socket);
+		updateRooms();
+	}
+
+	function getScoreData() {
+		getTopPlayers(db, function(result) {
+			socket.emit("scoreTable", result);
+		});
+	}
+
 	function getStatsForPlayer(username) {
 		getPlayerStats(db, username, function(result) {
 			socket.emit("statsForPlayer", result);
-		})
+		});
 	}
 
-	function winGame(roomNumber) {
-		var users = rooms[roomNumber].getPlayerObjects();
-		for (var i = 0; i < users.length; i++) {
-			var gameWon = (users[i].numberOfCards() === 0);
-			users[i].getSocket().emit("gameOver", gameWon);
-
-			var user = {
-				name: users[i].getName(),
-				gamePlayedInc: 1,
-				gamesWonInc: (users[i].numberOfCards() > 0) ? 0 : 1
-			};
-			updatePlayerScore(db, user, function(result) {});
-		}
+	function leaveRoom(roomNumber) {
+		var user = rooms[roomNumber].getPlayerWithSocket(socket);
+		socket.emit("showRooms", user.getName());
+		exitRoom(roomNumber);
 	}
 
 	/**
@@ -133,6 +138,7 @@ io.on("connection", function(socket) {
 	function playCard(data) {
 		rooms[data.roomNumber].playCard(socket, data.cardIndex, data.slotIndex);
 		sendDataToRoom(data.roomNumber);
+		checkIfGameIsDone(data.roomNumber);
 	}
 
 	function takeCards(roomNumber) {
@@ -152,6 +158,24 @@ function addPlayerToRoom(roomNumber, socket) {
 	io.in(rooms[roomNumber].getName())
 		.emit("updatePlayerListInRoom", rooms[roomNumber].getPlayers());
 	updateRooms();
+}
+
+function checkIfGameIsDone(roomNumber) {
+	if (rooms[roomNumber].gameIsDone()) {
+		console.log(roomNumber + "'s game is over");
+		var users = rooms[roomNumber].getPlayerObjects();
+		for (var i = 0; i < users.length; i++) {
+			var gameWon = (users[i].numberOfCards() === 0);
+			users[i].getSocket().emit("gameOver", gameWon);
+
+			var user = {
+				name: users[i].getName(),
+				gamesPlayedInc: 1,
+				gamesWonInc: (users[i].numberOfCards() > 0) ? 0 : 1
+			};
+			updatePlayerScore(db, user, function(result) {});
+		}
+	}
 }
 
 /**
@@ -244,21 +268,20 @@ function updateRooms() {
 }
 
 // Database Methods
-
-/**
-* @param {string}	user.name,
-* @param {int}		user.gameLost	0 if game was not lost by player, 1 if game was.
-*/
 function addPlayerScore(db, user, callback) {
-	if (mongoDBEnabled) {
+	if (!mongoDBEnabled) {
 		return false;
 	}
 
-	db.collection("users").insertOne({
-		name: user.name,
-		gamesPlayed: user.gamesPlayedInc,
-		gamesWon: user.gamesWonInc
-	}, insertResult);
+	getPlayerStats(db, user.name, function(result) {
+		if (!result) {
+			db.collection("users").insertOne({
+				name: user.name,
+				gamesPlayed: user.gamesPlayedInc,
+				gamesWon: user.gamesWonInc
+			}, insertResult);
+		}
+	});
 
 	function insertResult(err, result) {
 		if (err != null) {
@@ -270,10 +293,6 @@ function addPlayerScore(db, user, callback) {
 	}
 }
 
-/**
-* @param {string}	user.name,
-* @param {int}		user.gameLost	0 if game was not lost by player, 1 if game was.
-*/
 function updatePlayerScore(db, user, callback) {
 	if (!mongoDBEnabled) {
 		return false;
@@ -282,7 +301,6 @@ function updatePlayerScore(db, user, callback) {
 	db.collection("users").update(
 		{name: user.name},
 		{$inc: {gamesPlayed: user.gamesPlayedInc, gamesWon: user.gamesWonInc}},
-		{ upsert: true },
 		updateResult
 	);
 
@@ -316,12 +334,12 @@ function getTopPlayers(db, callback) {
 /**
 * @param {string} username
 */
-function getPlayerStats(db, name, callback) {
+function getPlayerStats(db, username, callback) {
 	if (!mongoDBEnabled) {
 		return false;
 	}
 
-	db.collection("users").findOne({name: name}).toArray(findResult);
+	db.collection("users").findOne({name: username}, findResult);
 
 	function findResult(err, result) {
 		if (err != null) {
@@ -337,6 +355,7 @@ if (mongoDBEnabled) {
 	mongoClient.connect("mongodb://localhost:27017/durak", function(err, database) {
 		if (err) throw err;
 		db = database;
+		db.collection("users").createIndex( { name: 1 }, { unique: true } );
 		console.log("Connected to Mongo.");
 		serverListen();
 	});

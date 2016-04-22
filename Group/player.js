@@ -16,6 +16,7 @@ function Player(aUsername, aSocket) {
 }
 
 Player.prototype = {
+	clearCards: clearCards,
 	getCard: getCard,
 	getCards: getCards,
 	getLowestTrump: getLowestTrump,
@@ -33,6 +34,10 @@ Player.prototype = {
 	setUsername: setUsername,
 	takeCards: takeCards
 };
+
+function clearCards() {
+	this.cards = [];
+}
 
 function getCard(cardIndex) {
 	return this.cards[cardIndex];

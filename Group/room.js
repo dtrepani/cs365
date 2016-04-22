@@ -29,10 +29,10 @@ function Room(name) {
 	* they empty their hand once the deck is depleted, but they're still
 	* in the room itself.
 	*/
-	this.playersInGame = [];
+	this.players = [];
 
 	/**
-	* @var {string[]}	Use (this.playersInGame.length - 2) to
+	* @var {string[]}	Use (this.players.length - 2) to
 	* 	get appropriate state cycle to use for the number
 	*	of players in game. Corresponds to players[] and
 	*	their position.
@@ -68,14 +68,15 @@ Room.prototype = {
 	// Game data
 	getDataForPlayer: getDataForPlayer,
 	getDataForOpponents: getDataForOpponents,
-	getPlayerInGameIndexForState: getPlayerInGameIndexForState,
+	getPlayerIndexForState: getPlayerIndexForState,
 
 	// Game actions
 	allAttackCardsHaveBeenPlayed: allAttackCardsHaveBeenPlayed,
 	allAttacksHaveBeenDefended: allAttacksHaveBeenDefended,
-	checkIfPlayerCanBeRemovedFromGame: checkIfPlayerCanBeRemovedFromGame,
+	gameIsDone: gameIsDone,
 	dealCards: dealCards,
 	discard: discard,
+	endAttack: endAttack,
 	makeMove: makeMove,
 	nextRound: nextRound,
 	nextTurn: nextTurn,
@@ -100,7 +101,7 @@ function addPlayer(player) {
 }
 
 function allAttackCardsHaveBeenPlayed() {
-	var user = this.players[this.getPlayerInGameIndexForState("attacking")];
+	var user = this.players[this.getPlayerIndexForState("attacking")];
 	return !user.hasCardsThatMatchNumbers(this.cardsInPlay.attacking) && !user.hasCardsThatMatchNumbers(this.cardsInPlay.defending);
 }
 
@@ -113,30 +114,33 @@ function allAttacksHaveBeenDefended() {
 	return true;
 }
 
-function checkIfPlayerCanBeRemovedFromGame(user) {
-	if (this.deck.numberOfCards() === 0 && user.numberOfCards() === 0) {
-		user.setState("waiting");
-		this.playersInGame.splice(this.playersInGame.indexOf(user), 1);
-		return true;
+function gameIsDone() {
+	if (this.deck.numberOfCards() === 0 && !this.deck.getTrump()) {
+		for (var i = 0; i < this.players.length; i++) {
+			if (this.players[i].numberOfCards() === 0) {
+				this.state = "waiting";
+				return true;
+			}
+		}
 	}
 	return false;
 }
 
 function dealCards() {
-	var attackerIndex = this.getPlayerInGameIndexForState("attacking");
+	var attackerIndex = this.getPlayerIndexForState("attacking");
 
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		var modIndex = (attackerIndex + i) % (this.playersInGame.length);
+	for (var i = 0; i < this.players.length; i++) {
+		var modIndex = (attackerIndex + i) % (this.players.length);
 		while (
-			(this.playersInGame[modIndex].numberOfCards() &&
-				(6 - this.playersInGame[modIndex].numberOfCards() > 0) &&
+			(this.players[modIndex].numberOfCards() &&
+				(6 - this.players[modIndex].numberOfCards() > 0) &&
 				((this.deck.numberOfCards() > 0)) ||
 			(this.deck.numberOfCards() === 0 && this.deck.getTrump()))
 		) {
 			if (this.deck.numberOfCards() === 0) {
-				this.playersInGame[modIndex].giveCard(this.deck.takeTrump());
+				this.players[modIndex].giveCard(this.deck.takeTrump());
 			} else {
-				this.playersInGame[modIndex].giveCard(this.deck.removeCard());
+				this.players[modIndex].giveCard(this.deck.removeCard());
 			}
 		}
 	}
@@ -151,23 +155,23 @@ function determineAttackOrder() {
 	var playersWithTrump = [];
 	var trumpSuit = this.deck.getTrump().getSuit();
 
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		while (6 - this.playersInGame[i].numberOfCards() > 0) {
-			this.playersInGame[i].giveCard(this.deck.removeCard());
+	for (var i = 0; i < this.players.length; i++) {
+		while (6 - this.players[i].numberOfCards() > 0) {
+			this.players[i].giveCard(this.deck.removeCard());
 		}
 	}
 
-	for (var i = 0; i < this.playersInGame.length; i++) {
+	for (var i = 0; i < this.players.length; i++) {
 		playersWithTrump.push({
-			player: this.playersInGame[i],
-			trump: this.playersInGame[i].getLowestTrump(trumpSuit)
+			player: this.players[i],
+			trump: this.players[i].getLowestTrump(trumpSuit)
 		});
 	}
 
 	playersWithTrump.sort(this.sortByLowestTrump);
 
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		this.playersInGame[i] = playersWithTrump[i].player;
+	for (var i = 0; i < this.players.length; i++) {
+		this.players[i] = playersWithTrump[i].player;
 	}
 
 	this.initializeAttackCycle();
@@ -183,12 +187,16 @@ function discard(socket) {
 			this.attackerDiscard.supporting = true;
 		}
 
-		if (this.attackerDiscard.attacking && (this.playersInGame.length === 2 || this.attackerDiscard.supporting) && this.cardsInPlay.attacking.length > 0) {
+		if (this.attackerDiscard.attacking && (this.players.length === 2 || this.attackerDiscard.supporting) && this.cardsInPlay.attacking.length > 0) {
 			this.discardDeck.addCards(this.takeCardsInPlay());
 			console.log("Discarding");
 			this.nextRound(true);
 		}
 	}
+}
+
+function endAttack() {
+	this.nextTurn();
 }
 
 /**
@@ -253,9 +261,9 @@ function getName() {
 	return this.name;
 }
 
-function getPlayerInGameIndexForState(state) {
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		if (this.playersInGame[i].getState() === state) {
+function getPlayerIndexForState(state) {
+	for (var i = 0; i < this.players.length; i++) {
+		if (this.players[i].getState() === state) {
 			return i;
 		}
 	}
@@ -298,9 +306,9 @@ function getState() {
 }
 
 function initializeAttackCycle() {
-	var cycle = this.playerStateCycle[this.playersInGame.length - 2];
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		this.playersInGame[i].setState(cycle[i]);
+	var cycle = this.playerStateCycle[this.players.length - 2];
+	for (var i = 0; i < this.players.length; i++) {
+		this.players[i].setState(cycle[i]);
 	}
 }
 
@@ -334,22 +342,18 @@ function makeMove(user, cardIndex, slotIndex) {
 *									twice, but only need to deal cards once.
 */
 function nextRound(dealCardsOnRound) {
-	for (var i = 0; i < this.playersInGame.length; i++) {
-		this.checkIfPlayerCanBeRemovedFromGame(this.playersInGame[i]);
-	}
-
-	if (this.playersInGame.length > 1) {
+	if (this.players.length > 1) {
 		console.log("Next round");
 
 		if (dealCardsOnRound) {
 			this.dealCards();
 		}
 
-		var cycle = this.playerStateCycle[this.playersInGame.length - 2];
+		var cycle = this.playerStateCycle[this.players.length - 2];
 		this.currentTurn = "attacking";
 
-		for (var i = 0; i < this.playersInGame.length; i++) {
-			var user = this.playersInGame[i];
+		for (var i = 0; i < this.players.length; i++) {
+			var user = this.players[i];
 			var stateIndex = cycle.indexOf(user.getState());
 			user.setState(cycle[(stateIndex + 1) % cycle.length]);
 		}
@@ -381,7 +385,7 @@ function nextTurn() {
 function noMoreCardsCanBePlayed() {
 	return (
 		(this.currentTurn === "defending") &&
-		(this.playersInGame[this.getPlayerInGameIndexForState("defending")].numberOfCards() === 0)
+		(this.players[this.getPlayerIndexForState("defending")].numberOfCards() === 0)
 	);
 }
 
@@ -394,7 +398,7 @@ function playCard(socket, cardIndex, slotIndex) {
 	var user = this.getPlayerWithSocket(socket);
 	if (this.makeMove(user, cardIndex, slotIndex)) {
 		var state = user.getState();
-		if (state === "attacking" && this.allAttackCardsHaveBeenPlayed()) {
+		if (state === "attacking") {
 			this.nextTurn();
 		} else if (state === "defending" && this.allAttacksHaveBeenDefended()) {
 			this.nextTurn();
@@ -419,7 +423,7 @@ function playerTakeCards(socket) {
 			user.takeCards(this.takeCardsInPlay());
 			console.log("Taking cards");
 			this.nextRound(true);
-			if (this.playersInGame.length === 2) {
+			if (this.players.length === 2) {
 				this.nextRound(false);
 			}
 		}
@@ -475,11 +479,14 @@ function startGame() {
 	this.discardDeck = new deck.Deck(0);
 	this.state = "playing";
 	this.currentTurn = "attacking";
-	this.playersInGame = this.players;
 	this.cardsInPlay.attacking = [];
 	this.cardsInPlay.defending = [];
 	this.attackerDiscard.attacking = false;
 	this.attackerDiscard.supporting = false;
+
+	for (var i = 0; i < this.players.length; i++) {
+		this.players[i].clearCards();
+	}
 
 	this.determineAttackOrder();
 }
